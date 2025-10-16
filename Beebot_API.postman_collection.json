@@ -1,0 +1,2199 @@
+{
+    "info": {
+      "_postman_id": "6d2e4e5f-dc4e-4a2f-b91b-25d0f630a1a1",
+      "name": "Kopmensa API (Official Documentation)",
+      "description": "This collection provides complete, interactive documentation for the Kopmensa API, matching the official `api_kopmensa.txt` specification.",
+      "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+    },
+    "item": [
+      {
+        "name": "api",
+        "item": [
+          {
+            "name": "anggota-user",
+            "item": [
+              {
+                "name": "Login",
+                "request": {
+                  "method": "POST",
+                  "header": [
+                    { "key": "Content-Type", "value": "application/x-www-form-urlencoded" }
+                  ],
+                  "url": {
+                    "raw": "{{baseUrl}}/api/anggota/login",
+                    "host": ["{{baseUrl}}"],
+                    "path": ["api", "anggota", "login"]
+                  },
+                  "body": {
+                    "mode": "urlencoded",
+                    "urlencoded": [
+                      { "key": "user", "value": "<your_username_or_email>", "description": "Username atau email anggota" },
+                      { "key": "pass", "value": "<your_password>", "description": "Password anggota" }
+                    ]
+                  }
+                },
+                "response": [
+                  {
+                    "name": "Success",
+                    "originalRequest": {
+                      "method": "POST",
+                      "header": [
+                        { "key": "Content-Type", "value": "application/x-www-form-urlencoded" }
+                      ],
+                      "url": { "raw": "{{baseUrl}}/api/anggota/login", "host": ["{{baseUrl}}"], "path": ["api", "anggota", "login"] },
+                      "body": { "mode": "urlencoded", "urlencoded": [ { "key": "user", "value": "<your_username_or_email>" }, { "key": "pass", "value": "<your_password>" } ] }
+                    },
+                    "status": "OK",
+                    "code": 200,
+                    "body": "{\n  \"success\": true,\n  \"message\": \"Login berhasil\",\n  \"data\": {\n    \"user_id\": 123,\n    \"token\": \"<jwt_token>\",\n    \"user_info\": {\"first_name\": \"John\", \"username\": \"john_doe\", \"email\": \"john@example.com\", \"tipe\": \"1\"}\n  }\n}"
+                  },
+                  {
+                    "name": "Error - Invalid Credentials",
+                    "originalRequest": {
+                      "method": "POST",
+                      "header": [
+                        { "key": "Content-Type", "value": "application/x-www-form-urlencoded" }
+                      ],
+                      "url": { "raw": "{{baseUrl}}/api/anggota/login", "host": ["{{baseUrl}}"], "path": ["api", "anggota", "login"] }
+                    },
+                    "status": "Unauthorized",
+                    "code": 401,
+                    "body": "{\n  \"status\": 401,\n  \"error\": \"Username/email atau password salah\"\n}"
+                  }
+                ]
+              },
+              {
+                "name": "Profile",
+                "request": {
+                  "method": "GET",
+                  "header": [
+                    { "key": "Authorization", "value": "Bearer {{jwt_token}}" }
+                  ],
+                  "url": {
+                    "raw": "{{baseUrl}}/api/anggota/profile",
+                    "host": ["{{baseUrl}}"],
+                    "path": ["api", "anggota", "profile"]
+                  }
+                }
+              },
+              {
+                "name": "Logout",
+                "request": {
+                  "method": "GET",
+                  "header": [
+                    { "key": "Authorization", "value": "Bearer {{jwt_token}}" }
+                  ],
+                  "url": {
+                    "raw": "{{baseUrl}}/api/anggota/logout",
+                    "host": ["{{baseUrl}}"],
+                    "path": ["api", "anggota", "logout"]
+                  }
+                }
+              },
+              {
+                "name": "Set PIN (First Time)",
+                "request": {
+                  "method": "POST",
+                  "header": [
+                    { "key": "Authorization", "value": "Bearer {{jwt_token}}" },
+                    { "key": "Content-Type", "value": "application/x-www-form-urlencoded" }
+                  ],
+                  "url": {
+                    "raw": "{{baseUrl}}/api/anggota/set-pin",
+                    "host": ["{{baseUrl}}"],
+                    "path": ["api", "anggota", "set-pin"]
+                  },
+                  "body": {
+                    "mode": "urlencoded",
+                    "urlencoded": [
+                      { "key": "pin", "value": "123456", "description": "6-digit PIN (numeric only)" },
+                      { "key": "confirm_pin", "value": "123456", "description": "Confirm 6-digit PIN (must match)" }
+                    ]
+                  }
+                },
+                "response": [
+                  {
+                    "name": "Success",
+                    "originalRequest": {
+                      "method": "POST",
+                      "header": [
+                        { "key": "Authorization", "value": "Bearer {{jwt_token}}" },
+                        { "key": "Content-Type", "value": "application/x-www-form-urlencoded" }
+                      ],
+                      "url": { "raw": "{{baseUrl}}/api/anggota/set-pin", "host": ["{{baseUrl}}"], "path": ["api", "anggota", "set-pin"] },
+                      "body": { "mode": "urlencoded", "urlencoded": [ { "key": "pin", "value": "123456" }, { "key": "confirm_pin", "value": "123456" } ] }
+                    },
+                    "status": "OK",
+                    "code": 200,
+                    "body": "{\n  \"success\": true,\n  \"message\": \"PIN berhasil diatur\",\n  \"data\": {\"user_id\": 123, \"pin_set\": true}\n}"
+                  },
+                  {
+                    "name": "Error - PIN Already Exists",
+                    "originalRequest": {
+                      "method": "POST",
+                      "header": [
+                        { "key": "Authorization", "value": "Bearer {{jwt_token}}" },
+                        { "key": "Content-Type", "value": "application/x-www-form-urlencoded" }
+                      ],
+                      "url": { "raw": "{{baseUrl}}/api/anggota/set-pin", "host": ["{{baseUrl}}"], "path": ["api", "anggota", "set-pin"] }
+                    },
+                    "status": "Bad Request",
+                    "code": 400,
+                    "body": "{\n  \"status\": 400,\n  \"error\": \"PIN sudah diatur sebelumnya. Gunakan fungsi ubah PIN untuk mengubah PIN yang ada.\"\n}"
+                  }
+                ]
+              },
+              {
+                "name": "Validate PIN",
+                "request": {
+                  "method": "POST",
+                  "header": [
+                    { "key": "Authorization", "value": "Bearer {{jwt_token}}" },
+                    { "key": "Content-Type", "value": "application/x-www-form-urlencoded" }
+                  ],
+                  "url": {
+                    "raw": "{{baseUrl}}/api/anggota/validate-pin",
+                    "host": ["{{baseUrl}}"],
+                    "path": ["api", "anggota", "validate-pin"]
+                  },
+                  "body": {
+                    "mode": "urlencoded",
+                    "urlencoded": [
+                      { "key": "pin", "value": "123456", "description": "6-digit PIN to validate" }
+                    ]
+                  }
+                },
+                "response": [
+                  {
+                    "name": "Success",
+                    "originalRequest": {
+                      "method": "POST",
+                      "header": [
+                        { "key": "Authorization", "value": "Bearer {{jwt_token}}" },
+                        { "key": "Content-Type", "value": "application/x-www-form-urlencoded" }
+                      ],
+                      "url": { "raw": "{{baseUrl}}/api/anggota/validate-pin", "host": ["{{baseUrl}}"], "path": ["api", "anggota", "validate-pin"] }
+                    },
+                    "status": "OK",
+                    "code": 200,
+                    "body": "{\n  \"success\": true,\n  \"message\": \"PIN valid\",\n  \"data\": {\n    \"user_id\": 123,\n    \"pin_valid\": true,\n    \"user_info\": {\"first_name\": \"John\", \"username\": \"john_doe\", \"email\": \"john@example.com\", \"tipe\": \"1\"}\n  }\n}"
+                  },
+                  {
+                    "name": "Error - Invalid PIN",
+                    "originalRequest": {
+                      "method": "POST",
+                      "header": [
+                        { "key": "Authorization", "value": "Bearer {{jwt_token}}" },
+                        { "key": "Content-Type", "value": "application/x-www-form-urlencoded" }
+                      ],
+                      "url": { "raw": "{{baseUrl}}/api/anggota/validate-pin", "host": ["{{baseUrl}}"], "path": ["api", "anggota", "validate-pin"] }
+                    },
+                    "status": "Unauthorized",
+                    "code": 401,
+                    "body": "{\n  \"status\": 401,\n  \"error\": \"PIN tidak valid\"\n}"
+                  }
+                ]
+              },
+              {
+                "name": "Change PIN",
+                "request": {
+                  "method": "POST",
+                  "header": [
+                    { "key": "Authorization", "value": "Bearer {{jwt_token}}" },
+                    { "key": "Content-Type", "value": "application/x-www-form-urlencoded" }
+                  ],
+                  "url": {
+                    "raw": "{{baseUrl}}/api/anggota/change-pin",
+                    "host": ["{{baseUrl}}"],
+                    "path": ["api", "anggota", "change-pin"]
+                  },
+                  "body": {
+                    "mode": "urlencoded",
+                    "urlencoded": [
+                      { "key": "current_pin", "value": "123456", "description": "Current 6-digit PIN" },
+                      { "key": "new_pin", "value": "654321", "description": "New 6-digit PIN" },
+                      { "key": "confirm_new_pin", "value": "654321", "description": "Confirm new 6-digit PIN (must match)" }
+                    ]
+                  }
+                },
+                "response": [
+                  {
+                    "name": "Success",
+                    "originalRequest": {
+                      "method": "POST",
+                      "header": [
+                        { "key": "Authorization", "value": "Bearer {{jwt_token}}" },
+                        { "key": "Content-Type", "value": "application/x-www-form-urlencoded" }
+                      ],
+                      "url": { "raw": "{{baseUrl}}/api/anggota/change-pin", "host": ["{{baseUrl}}"], "path": ["api", "anggota", "change-pin"] }
+                    },
+                    "status": "OK",
+                    "code": 200,
+                    "body": "{\n  \"success\": true,\n  \"message\": \"PIN berhasil diubah\",\n  \"data\": {\"user_id\": 123, \"pin_changed\": true}\n}"
+                  },
+                  {
+                    "name": "Error - Current PIN Invalid",
+                    "originalRequest": {
+                      "method": "POST",
+                      "header": [
+                        { "key": "Authorization", "value": "Bearer {{jwt_token}}" },
+                        { "key": "Content-Type", "value": "application/x-www-form-urlencoded" }
+                      ],
+                      "url": { "raw": "{{baseUrl}}/api/anggota/change-pin", "host": ["{{baseUrl}}"], "path": ["api", "anggota", "change-pin"] }
+                    },
+                    "status": "Unauthorized",
+                    "code": 401,
+                    "body": "{\n  \"status\": 401,\n  \"error\": \"PIN saat ini tidak valid\"\n}"
+                  }
+                ]
+              },
+              {
+                "name": "Check PIN Status",
+                "request": {
+                  "method": "GET",
+                  "header": [
+                    { "key": "Authorization", "value": "Bearer {{jwt_token}}" }
+                  ],
+                  "url": {
+                    "raw": "{{baseUrl}}/api/anggota/pin-status",
+                    "host": ["{{baseUrl}}"],
+                    "path": ["api", "anggota", "pin-status"]
+                  }
+                },
+                "response": [
+                  {
+                    "name": "Success - PIN Set",
+                    "originalRequest": {
+                      "method": "GET",
+                      "header": [
+                        { "key": "Authorization", "value": "Bearer {{jwt_token}}" }
+                      ],
+                      "url": { "raw": "{{baseUrl}}/api/anggota/pin-status", "host": ["{{baseUrl}}"], "path": ["api", "anggota", "pin-status"] }
+                    },
+                    "status": "OK",
+                    "code": 200,
+                    "body": "{\n  \"success\": true,\n  \"data\": {\n    \"user_id\": 123,\n    \"pin_set\": true,\n    \"user_info\": {\"first_name\": \"John\", \"username\": \"john_doe\", \"email\": \"john@example.com\", \"tipe\": \"1\"}\n  }\n}"
+                  },
+                  {
+                    "name": "Success - No PIN Set",
+                    "originalRequest": {
+                      "method": "GET",
+                      "header": [
+                        { "key": "Authorization", "value": "Bearer {{jwt_token}}" }
+                      ],
+                      "url": { "raw": "{{baseUrl}}/api/anggota/pin-status", "host": ["{{baseUrl}}"], "path": ["api", "anggota", "pin-status"] }
+                    },
+                    "status": "OK",
+                    "code": 200,
+                    "body": "{\n  \"success\": true,\n  \"data\": {\n    \"user_id\": 123,\n    \"pin_set\": false,\n    \"user_info\": {\"first_name\": \"John\", \"username\": \"john_doe\", \"email\": \"john@example.com\", \"tipe\": \"1\"}\n  }\n}"
+                  }
+                ]
+              },
+              {
+                "name": "Reset PIN (Forgot PIN)",
+                "request": {
+                  "method": "POST",
+                  "header": [
+                    { "key": "Authorization", "value": "Bearer {{jwt_token}}" },
+                    { "key": "Content-Type", "value": "application/x-www-form-urlencoded" }
+                  ],
+                  "url": {
+                    "raw": "{{baseUrl}}/api/anggota/reset-pin",
+                    "host": ["{{baseUrl}}"],
+                    "path": ["api", "anggota", "reset-pin"]
+                  },
+                  "body": {
+                    "mode": "urlencoded",
+                    "urlencoded": [
+                      { "key": "email", "value": "user@example.com", "description": "User email (or use username instead)" }
+                    ]
+                  }
+                },
+                "response": [
+                  {
+                    "name": "Success",
+                    "originalRequest": {
+                      "method": "POST",
+                      "header": [
+                        { "key": "Authorization", "value": "Bearer {{jwt_token}}" },
+                        { "key": "Content-Type", "value": "application/x-www-form-urlencoded" }
+                      ],
+                      "url": { "raw": "{{baseUrl}}/api/anggota/reset-pin", "host": ["{{baseUrl}}"], "path": ["api", "anggota", "reset-pin"] }
+                    },
+                    "status": "OK",
+                    "code": 200,
+                    "body": "{\n  \"success\": true,\n  \"message\": \"PIN berhasil direset\",\n  \"data\": {\n    \"user_id\": 123,\n    \"new_pin\": \"789012\",\n    \"pin_reset\": true,\n    \"note\": \"Simpan PIN baru ini dengan aman. PIN akan di-hash setelah digunakan.\"\n  }\n}"
+                  },
+                  {
+                    "name": "Error - User Not Found",
+                    "originalRequest": {
+                      "method": "POST",
+                      "header": [
+                        { "key": "Authorization", "value": "Bearer {{jwt_token}}" },
+                        { "key": "Content-Type", "value": "application/x-www-form-urlencoded" }
+                      ],
+                      "url": { "raw": "{{baseUrl}}/api/anggota/reset-pin", "host": ["{{baseUrl}}"], "path": ["api", "anggota", "reset-pin"] }
+                    },
+                    "status": "Not Found",
+                    "code": 404,
+                    "body": "{\n  \"status\": 404,\n  \"error\": \"User tidak ditemukan\"\n}"
+                  }
+                ]
+              }
+            ]
+          },
+          {
+            "name": "kasir",
+            "item": [
+                {
+                    "name": "Login",
+                    "request": {
+                      "method": "POST",
+                      "header": [
+                        {
+                          "key": "Content-Type",
+                          "value": "application/x-www-form-urlencoded"
+                        }
+                      ],
+                      "url": {
+                        "raw": "{{baseUrl}}/api/pos/login",
+                        "host": ["{{baseUrl}}"],
+                        "path": ["api", "pos", "login"]
+                      },
+                      "body": {
+                        "mode": "urlencoded",
+                        "urlencoded": [
+                          {
+                            "key": "user",
+                            "value": "<your_username>",
+                            "description": "POS user username"
+                          },
+                          {
+                            "key": "pass",
+                            "value": "<your_password>",
+                            "description": "POS user password"
+                          },
+                          {
+                            "key": "outlet",
+                            "value": "<outlet_id>",
+                            "description": "Outlet ID yang dipilih saat login"
+                          },
+                          {
+                            "key": "device_id",
+                            "value": "<device_id>",
+                            "description": "ID unik perangkat yang digunakan untuk login"
+                          },
+                          {
+                            "key": "device_name",
+                            "value": "<device_name>",
+                            "description": "Nama perangkat yang digunakan untuk login"
+                          },
+                          {
+                            "key": "device_ip",
+                            "value": "<device_ip>",
+                            "description": "IP address perangkat yang digunakan untuk login"
+                          }
+                        ]
+                      }
+                    },
+                    "event": [
+                      {
+                        "listen": "test",
+                        "script": {
+                          "type": "text/javascript",
+                          "exec": [
+                            "let res = pm.response.json();",
+                            "if (res.token) {",
+                            "  pm.environment.set(\"jwt_token\", res.token);",
+                            "}"
+                          ]
+                        }
+                      }
+                    ]
+                  }
+                  ,
+              {
+                "name": "Produk",
+                "request": {
+                  "method": "GET",
+                  "header": [
+                    { "key": "Authorization", "value": "Bearer {{jwt_token}}" }
+                  ],
+                  "url": {
+                    "raw": "{{baseUrl}}/api/pos/produk?per_page=10&keyword=&page=1",
+                    "host": ["{{baseUrl}}"],
+                    "path": ["api", "pos", "produk"],
+                    "query": [
+                      { "key": "per_page", "value": "10" },
+                      { "key": "keyword", "value": "" },
+                      { "key": "page", "value": "1" }
+                    ]
+                  }
+                }
+              },
+              {
+                "name": "Produk Detail",
+                "request": {
+                  "method": "GET",
+                  "header": [
+                    { "key": "Authorization", "value": "Bearer {{jwt_token}}" }
+                  ],
+                  "url": {
+                    "raw": "{{baseUrl}}/api/pos/produk/detail/1",
+                    "host": ["{{baseUrl}}"],
+                    "path": ["api", "pos", "produk", "detail", "1"]
+                  }
+                }
+              },
+              {
+                "name": "Kategori",
+                "request": {
+                  "method": "GET",
+                  "header": [
+                    { "key": "Authorization", "value": "Bearer {{jwt_token}}" }
+                  ],
+                  "url": {
+                    "raw": "{{baseUrl}}/api/pos/category?per_page=10&keyword=&page=1",
+                    "host": ["{{baseUrl}}"],
+                    "path": ["api", "pos", "category"],
+                    "query": [
+                      { "key": "per_page", "value": "10" },
+                      { "key": "keyword", "value": "" },
+                      { "key": "page", "value": "1" }
+                    ]
+                  }
+                }
+              },
+              {
+                "name": "Kategori Detail",
+                "request": {
+                  "method": "GET",
+                  "header": [
+                    { "key": "Authorization", "value": "Bearer {{jwt_token}}" }
+                  ],
+                  "url": {
+                    "raw": "{{baseUrl}}/api/pos/category/52",
+                    "host": ["{{baseUrl}}"],
+                    "path": ["api", "pos", "category", "52"]
+                  }
+                }
+              },
+              {
+                "name": "Merk",
+                "request": {
+                  "method": "GET",
+                  "header": [
+                    { "key": "Authorization", "value": "Bearer {{jwt_token}}" }
+                  ],
+                  "url": {
+                    "raw": "{{baseUrl}}/api/pos/merk?per_page=10&keyword=&page=1",
+                    "host": ["{{baseUrl}}"],
+                    "path": ["api", "pos", "merk"],
+                    "query": [
+                      { "key": "per_page", "value": "10" },
+                      { "key": "keyword", "value": "" },
+                      { "key": "page", "value": "1" }
+                    ]
+                  }
+                }
+              },
+              {
+                "name": "Merk Detail",
+                "request": {
+                  "method": "GET",
+                  "header": [
+                    { "key": "Authorization", "value": "Bearer {{jwt_token}}" }
+                  ],
+                  "url": {
+                    "raw": "{{baseUrl}}/api/pos/merk/detail/1",
+                    "host": ["{{baseUrl}}"],
+                    "path": ["api", "pos", "merk", "detail", "1"]
+                  }
+                }
+              },
+              {
+                "name": "Merk All",
+                "request": {
+                  "method": "GET",
+                  "header": [
+                    { "key": "Authorization", "value": "Bearer {{jwt_token}}" }
+                  ],
+                  "url": {
+                    "raw": "{{baseUrl}}/api/pos/merk/all",
+                    "host": ["{{baseUrl}}"],
+                    "path": ["api", "pos", "merk", "all"]
+                  }
+                }
+              },
+              {
+                "name": "Merk Search",
+                "request": {
+                  "method": "GET",
+                  "header": [
+                    { "key": "Authorization", "value": "Bearer {{jwt_token}}" }
+                  ],
+                  "url": {
+                    "raw": "{{baseUrl}}/api/pos/merk/search?q=nike",
+                    "host": ["{{baseUrl}}"],
+                    "path": ["api", "pos", "merk", "search"],
+                    "query": [
+                      { "key": "q", "value": "nike", "description": "Search keyword for brand name or code" }
+                    ]
+                  }
+                }
+              },
+              {
+                "name": "Outlet",
+                "request": {
+                  "method": "GET",
+                  "header": [
+                    { "key": "Authorization", "value": "Bearer {{jwt_token}}" }
+                  ],
+                  "url": {
+                    "raw": "{{baseUrl}}/api/pos/outlet?per_page=10&page=1",
+                    "host": ["{{baseUrl}}"],
+                    "path": ["api", "pos", "outlet"],
+                    "query": [
+                      { "key": "per_page", "value": "10" },
+                      { "key": "page", "value": "1" }
+                    ]
+                  }
+                },
+                "response": [
+                  {
+                    "name": "Success",
+                    "originalRequest": {
+                      "method": "GET",
+                      "header": [
+                        { "key": "Authorization", "value": "Bearer {{jwt_token}}" }
+                      ],
+                      "url": {
+                        "raw": "{{baseUrl}}/api/pos/outlet?per_page=10&page=1",
+                        "host": ["{{baseUrl}}"],
+                        "path": ["api", "pos", "outlet"],
+                        "query": [
+                          { "key": "per_page", "value": "10" },
+                          { "key": "page", "value": "1" }
+                        ]
+                      }
+                    },
+                    "status": "OK",
+                    "code": 200,
+                    "body": "{\n  \"total\": 2,\n  \"current_page\": 1,\n  \"per_page\": 10,\n  \"total_page\": 1,\n  \"outlets\": [\n    {\"id\": 2, \"id_user\": 2, \"kode\": \"OTL-002\", \"nama\": \"Pojok Kopi\", \"deskripsi\": \"TES\", \"status\": 1, \"status_hps\": 0, \"created_at\": \"2025-06-20 23:11:43\", \"updated_at\": \"2025-06-21 09:30:52\"},\n    {\"id\": 1, \"id_user\": 2, \"kode\": \"OTL-001\", \"nama\": \"Pojok Seduh\", \"deskripsi\": \"TESTING\", \"status\": 1, \"status_hps\": 0, \"created_at\": \"2025-06-18 00:48:45\", \"updated_at\": \"2025-06-18 23:47:58\"}\n  ]\n}"
+                  }
+                ]
+              },
+              {
+                "name": "Outlet Detail",
+                "request": {
+                  "method": "GET",
+                  "header": [
+                    { "key": "Authorization", "value": "Bearer {{jwt_token}}" }
+                  ],
+                  "url": {
+                    "raw": "{{baseUrl}}/api/pos/outlet/detail/1",
+                    "host": ["{{baseUrl}}"],
+                    "path": ["api", "pos", "outlet", "detail", "1"]
+                  }
+                },
+                "response": [
+                  {
+                    "name": "Success",
+                    "originalRequest": {
+                      "method": "GET",
+                      "header": [
+                        { "key": "Authorization", "value": "Bearer {{jwt_token}}" }
+                      ],
+                      "url": {
+                        "raw": "{{baseUrl}}/api/pos/outlet/detail/1",
+                        "host": ["{{baseUrl}}"],
+                        "path": ["api", "pos", "outlet", "detail", "1"]
+                      }
+                    },
+                    "status": "OK",
+                    "code": 200,
+                    "body": "{\n  \"id\": 1,\n  \"id_user\": 2,\n  \"kode\": \"OTL-001\",\n  \"nama\": \"Pojok Seduh\",\n  \"deskripsi\": \"TESTING\",\n  \"status\": 1,\n  \"status_hps\": 0,\n  \"created_at\": \"2025-06-18 00:48:45\",\n  \"updated_at\": \"2025-06-18 23:47:58\"\n}"
+                  }
+                ]
+              },
+              {
+                "name": "Transaksi",
+                "request": {
+                  "method": "GET",
+                  "header": [
+                    { "key": "Authorization", "value": "Bearer {{jwt_token}}" }
+                  ],
+                  "url": {
+                    "raw": "{{baseUrl}}/api/pos/transaksi?id_pelanggan=123",
+                    "host": ["{{baseUrl}}"],
+                    "path": ["api", "pos", "transaksi"],
+                    "query": [
+                      { "key": "id_pelanggan", "value": "123", "description": "Customer ID (required)" }
+                    ]
+                  }
+                },
+                "response": [
+                  {
+                    "name": "Success",
+                    "originalRequest": {
+                      "method": "GET",
+                      "header": [
+                        { "key": "Authorization", "value": "Bearer {{jwt_token}}" }
+                      ],
+                      "url": {
+                        "raw": "{{baseUrl}}/api/pos/transaksi?id_pelanggan=123",
+                        "host": ["{{baseUrl}}"],
+                        "path": ["api", "pos", "transaksi"],
+                        "query": [
+                          { "key": "id_pelanggan", "value": "123" }
+                        ]
+                      }
+                    },
+                    "status": "OK",
+                    "code": 200,
+                    "body": "{\n  \"success\": true,\n  \"message\": \"Transactions retrieved successfully\",\n  \"total\": 2,\n  \"id_pelanggan\": 123,\n  \"transactions\": [\n    {\n      \"id\": 1,\n      \"id_user\": 5,\n      \"id_sales\": 2,\n      \"id_pelanggan\": 123,\n      \"id_gudang\": 1,\n      \"pelanggan\": \"Umum\",\n      \"no_nota\": \"TRX-20250801-0001\",\n      \"created_at\": \"2025-08-01 10:00:00\",\n      \"updated_at\": \"2025-08-01 10:05:00\",\n      \"deleted_at\": null,\n      \"tgl_bayar\": \"2025-08-01\",\n      \"tgl_masuk\": \"2025-08-01\",\n      \"tgl_keluar\": null,\n      \"jml_total\": 100000,\n      \"jml_biaya\": 0,\n      \"jml_ongkir\": 0,\n      \"jml_retur\": 0,\n      \"diskon\": 0,\n      \"jml_diskon\": 0,\n      \"jml_subtotal\": 100000,\n      \"ppn\": 0,\n      \"jml_ppn\": 0,\n      \"jml_gtotal\": 100000,\n      \"jml_bayar\": 100000,\n      \"jml_kembali\": 0,\n      \"jml_kurang\": 0,\n      \"disk1\": 0,\n      \"jml_disk1\": 0,\n      \"disk2\": 0,\n      \"jml_disk2\": 0,\n      \"disk3\": 0,\n      \"jml_disk3\": 0,\n      \"metode_bayar\": \"cash\",\n      \"status\": \"selesai\",\n      \"status_nota\": \"lunas\",\n      \"status_ppn\": \"tidak\",\n      \"status_bayar\": \"lunas\",\n      \"status_retur\": \"tidak\",\n      \"details\": [],\n      \"platform\": [],\n      \"follow\": false\n    },\n    {\n      \"id\": 2,\n      \"id_user\": 5,\n      \"id_sales\": 2,\n      \"id_pelanggan\": 123,\n      \"id_gudang\": 1,\n      \"pelanggan\": \"Umum\",\n      \"no_nota\": \"TRX-20250802-0002\",\n      \"created_at\": \"2025-08-02 11:00:00\",\n      \"updated_at\": \"2025-08-02 11:05:00\",\n      \"deleted_at\": null,\n      \"tgl_bayar\": \"2025-08-02\",\n      \"tgl_masuk\": \"2025-08-02\",\n      \"tgl_keluar\": null,\n      \"jml_total\": 200000,\n      \"jml_biaya\": 0,\n      \"jml_ongkir\": 0,\n      \"jml_retur\": 0,\n      \"diskon\": 0,\n      \"jml_diskon\": 0,\n      \"jml_subtotal\": 200000,\n      \"ppn\": 0,\n      \"jml_ppn\": 0,\n      \"jml_gtotal\": 200000,\n      \"jml_bayar\": 200000,\n      \"jml_kembali\": 0,\n      \"jml_kurang\": 0,\n      \"disk1\": 0,\n      \"jml_disk1\": 0,\n      \"disk2\": 0,\n      \"jml_disk2\": 0,\n      \"disk3\": 0,\n      \"jml_disk3\": 0,\n      \"metode_bayar\": \"transfer\",\n      \"status\": \"selesai\",\n      \"status_nota\": \"lunas\",\n      \"status_ppn\": \"tidak\",\n      \"status_bayar\": \"lunas\",\n      \"status_retur\": \"tidak\",\n      \"details\": [],\n      \"platform\": [],\n      \"follow\": false\n    }\n  ]\n}"
+                  }
+                ]
+              },
+              {
+                "name": "Transaksi by ID",
+                "request": {
+                  "method": "GET",
+                  "header": [
+                    { "key": "Authorization", "value": "Bearer {{jwt_token}}" }
+                  ],
+                  "url": {
+                    "raw": "{{baseUrl}}/api/pos/transaksi/123",
+                    "host": ["{{baseUrl}}"],
+                    "path": ["api", "pos", "transaksi", "123"]
+                  }
+                },
+                "response": [
+                  {
+                    "name": "Success",
+                    "originalRequest": {
+                      "method": "GET",
+                      "header": [
+                        { "key": "Authorization", "value": "Bearer {{jwt_token}}" }
+                      ],
+                      "url": {
+                        "raw": "{{baseUrl}}/api/pos/transaksi/123",
+                        "host": ["{{baseUrl}}"],
+                        "path": ["api", "pos", "transaksi", "123"]
+                      }
+                    },
+                    "status": "OK",
+                    "code": 200,
+                    "body": "{\n  \"success\": true,\n  \"message\": \"Transactions retrieved successfully\",\n  \"total\": 2,\n  \"id_pelanggan\": 123,\n  \"transactions\": [\n    {\"id\": 1, \"id_user\": 5, \"id_sales\": 2, \"id_pelanggan\": 123, \"id_gudang\": 1, \"no_nota\": \"TRX-20250801-0001\", \"created_at\": \"2025-08-01 10:00:00\", \"updated_at\": \"2025-08-01 10:05:00\", \"deleted_at\": null, \"tgl_bayar\": \"2025-08-01\", \"tgl_masuk\": \"2025-08-01\", \"tgl_keluar\": null, \"jml_total\": 100000, \"jml_biaya\": 0, \"jml_ongkir\": 0, \"jml_retur\": 0, \"diskon\": 0, \"jml_diskon\": 0, \"jml_subtotal\": 100000, \"ppn\": 0, \"jml_ppn\": 0, \"jml_gtotal\": 100000, \"jml_bayar\": 100000, \"jml_kembali\": 0, \"jml_kurang\": 0, \"disk1\": 0, \"jml_disk1\": 0, \"disk2\": 0, \"jml_disk2\": 0, \"disk3\": 0, \"jml_disk3\": 0, \"metode_bayar\": \"cash\", \"status\": \"selesai\", \"status_nota\": \"lunas\", \"status_ppn\": \"tidak\", \"status_bayar\": \"lunas\", \"status_retur\": \"tidak\"},\n    {\"id\": 2, \"id_user\": 5, \"id_sales\": 2, \"id_pelanggan\": 123, \"id_gudang\": 1, \"no_nota\": \"TRX-20250802-0002\", \"created_at\": \"2025-08-02 11:00:00\", \"updated_at\": \"2025-08-02 11:05:00\", \"deleted_at\": null, \"tgl_bayar\": \"2025-08-02\", \"tgl_masuk\": \"2025-08-02\", \"tgl_keluar\": null, \"jml_total\": 200000, \"jml_biaya\": 0, \"jml_ongkir\": 0, \"jml_retur\": 0, \"diskon\": 0, \"jml_diskon\": 0, \"jml_subtotal\": 200000, \"ppn\": 0, \"jml_ppn\": 0, \"jml_gtotal\": 200000, \"jml_bayar\": 200000, \"jml_kembali\": 0, \"jml_kurang\": 0, \"disk1\": 0, \"jml_disk1\": 0, \"disk2\": 0, \"jml_disk2\": 0, \"disk3\": 0, \"jml_disk3\": 0, \"metode_bayar\": \"transfer\", \"status\": \"selesai\", \"status_nota\": \"lunas\", \"status_ppn\": \"tidak\", \"status_bayar\": \"lunas\", \"status_retur\": \"tidak\"}\n  ]\n}"
+                  }
+                ]
+              },
+              {
+                "name": "Buat Transaksi",
+                "request": {
+                  "method": "POST",
+                  "header": [
+                    { "key": "Authorization", "value": "Bearer {{jwt_token}}" },
+                    { "key": "Content-Type", "value": "application/json" }
+                  ],
+                  "url": {
+                    "raw": "{{baseUrl}}/api/pos/transaksi/store",
+                    "host": ["{{baseUrl}}"],
+                    "path": ["api", "pos", "transaksi", "store"]
+                  },
+                  "body": {
+                    "mode": "raw",
+                    "raw": "{\n  \"id_user\": 1,\n  \"id_sales\": 2,\n  \"id_pelanggan\": 123,\n  \"id_gudang\": 1,\n  \"no_nota\": \"TRX-20250801-0001\",\n  \"tgl_masuk\": \"2025-08-01 10:00:00\",\n  \"tgl_bayar\": \"2025-08-01 10:00:00\",\n  \"jml_total\": 100000,\n  \"jml_subtotal\": 90090,\n  \"diskon\": 10,\n  \"jml_diskon\": 10000,\n  \"ppn\": 11,\n  \"jml_ppn\": 9910,\n  \"jml_gtotal\": 100000,\n  \"jml_bayar\": 100000,\n  \"jml_kembali\": 0,\n  \"metode_bayar\": \"cash\",\n  \"status\": \"1\",\n  \"status_nota\": \"1\",\n  \"status_bayar\": \"1\",\n  \"status_ppn\": \"1\",\n  \"cart\": [\n    {\n      \"id_item\": 1,\n      \"id_satuan\": 1,\n      \"id_kategori\": 14,\n      \"id_merk\": 1,\n      \"no_nota\": \"TRX-20250801-0001\",\n      \"kode\": \"ITEM-001\",\n      \"produk\": \"Kopi Hitam\",\n      \"satuan\": \"PCS\",\n      \"harga\": 50000,\n      \"harga_beli\": 40000,\n      \"jml\": 2,\n      \"jml_satuan\": 2,\n      \"subtotal\": 100000\n    }\n  ],\n  \"platform\": [\n    {\n      \"id_platform\": 1,\n      \"no_nota\": \"TRX-20250801-0001\",\n      \"platform\": \"cash\",\n      \"keterangan\": \"Pembayaran tunai\",\n      \"nominal\": 100000\n    }\n  ],\n  \"hist\": [\n    {\n      \"id_item\": 1,\n      \"id_satuan\": 1,\n      \"id_gudang\": 1,\n      \"id_user\": 1,\n      \"id_pelanggan\": 123,\n      \"tgl_masuk\": \"2025-08-01 10:00:00\",\n      \"no_nota\": \"TRX-20250801-0001\",\n      \"kode\": \"ITEM-001\",\n      \"item\": \"Kopi Hitam\",\n      \"nominal\": 50000,\n      \"jml\": 2,\n      \"jml_satuan\": 2,\n      \"satuan\": \"PCS\",\n      \"status\": \"4\"\n    }\n  ]\n}",
+                    "description": "JSON payload for creating a new transaction"
+                  }
+                },
+                "response": [
+                  {
+                    "name": "Success",
+                    "originalRequest": {
+                      "method": "POST",
+                      "header": [
+                        { "key": "Authorization", "value": "Bearer {{jwt_token}}" },
+                        { "key": "Content-Type", "value": "application/json" }
+                      ],
+                      "url": { "raw": "{{baseUrl}}/api/pos/transaksi/store", "host": ["{{baseUrl}}"], "path": ["api", "pos", "transaksi", "store"] }
+                    },
+                    "status": "OK",
+                    "code": 200,
+                    "body": "[\n  {\n    \"success\": true,\n    \"message\": \"Transaksi berhasil diproses\",\n    \"transaction_id\": 123,\n    \"no_nota\": \"TRX-20250801-0001\",\n    \"total\": 100000,\n    \"change\": 0\n  }\n]"
+                  },
+                  {
+                    "name": "Error - Missing Data",
+                    "originalRequest": {
+                      "method": "POST",
+                      "header": [
+                        { "key": "Authorization", "value": "Bearer {{jwt_token}}" },
+                        { "key": "Content-Type", "value": "application/json" }
+                      ],
+                      "url": { "raw": "{{baseUrl}}/api/pos/transaksi/store", "host": ["{{baseUrl}}"], "path": ["api", "pos", "transaksi", "store"] }
+                    },
+                    "status": "Bad Request",
+                    "code": 400,
+                    "body": "{\n  \"success\": false,\n  \"message\": \"Data transaksi utama atau cart tidak lengkap\"\n}"
+                  }
+                ]
+              },
+              {
+                "name": "Get Payment Methods",
+                "request": {
+                  "method": "GET",
+                  "header": [
+                    { "key": "Authorization", "value": "Bearer {{jwt_token}}" }
+                  ],
+                  "url": {
+                    "raw": "{{baseUrl}}/api/pos/transaksi/payments",
+                    "host": ["{{baseUrl}}"],
+                    "path": ["api", "pos", "transaksi", "payments"]
+                  }
+                },
+                "response": [
+                  {
+                    "name": "Success",
+                    "originalRequest": {
+                      "method": "GET",
+                      "header": [
+                        { "key": "Authorization", "value": "Bearer {{jwt_token}}" }
+                      ],
+                      "url": { "raw": "{{baseUrl}}/api/pos/transaksi/payments", "host": ["{{baseUrl}}"], "path": ["api", "pos", "transaksi", "payments"] }
+                    },
+                    "status": "OK",
+                    "code": 200,
+                    "body": "{\n  \"success\": true,\n  \"payment_methods\": [\n    {\"id\": \"1\", \"name\": \"Tunai\", \"type\": \"cash\"},\n    {\"id\": \"2\", \"name\": \"Transfer\", \"type\": \"transfer\"},\n    {\"id\": \"3\", \"name\": \"Piutang\", \"type\": \"credit\"},\n    {\"id\": \"4\", \"name\": \"GoPay\", \"type\": \"platform\"},\n    {\"id\": \"5\", \"name\": \"OVO\", \"type\": \"platform\"}\n  ]\n}"
+                  }
+                ]
+              },
+              {
+                "name": "Validate Voucher",
+                "request": {
+                  "method": "POST",
+                  "header": [
+                    { "key": "Authorization", "value": "Bearer {{jwt_token}}" },
+                    { "key": "Content-Type", "value": "application/x-www-form-urlencoded" }
+                  ],
+                  "url": {
+                    "raw": "{{baseUrl}}/api/pos/transaksi/validate-voucher",
+                    "host": ["{{baseUrl}}"],
+                    "path": ["api", "pos", "transaksi", "validate-voucher"]
+                  },
+                  "body": {
+                    "mode": "urlencoded",
+                    "urlencoded": [
+                      { "key": "voucher_code", "value": "DISKON50", "description": "Voucher code to validate" }
+                    ]
+                  }
+                },
+                "response": [
+                  {
+                    "name": "Success - Valid Voucher",
+                    "originalRequest": {
+                      "method": "POST",
+                      "header": [
+                        { "key": "Authorization", "value": "Bearer {{jwt_token}}" },
+                        { "key": "Content-Type", "value": "application/x-www-form-urlencoded" }
+                      ],
+                      "url": { "raw": "{{baseUrl}}/api/pos/transaksi/validate-voucher", "host": ["{{baseUrl}}"], "path": ["api", "pos", "transaksi", "validate-voucher"] }
+                    },
+                    "status": "OK",
+                    "code": 200,
+                    "body": "{\n  \"valid\": true,\n  \"discount\": 50,\n  \"discount_amount\": 0,\n  \"jenis_voucher\": \"persen\",\n  \"voucher_id\": 1,\n  \"message\": \"Voucher valid\"\n}"
+                  },
+                  {
+                    "name": "Error - Invalid Voucher",
+                    "originalRequest": {
+                      "method": "POST",
+                      "header": [
+                        { "key": "Authorization", "value": "Bearer {{jwt_token}}" },
+                        { "key": "Content-Type", "value": "application/x-www-form-urlencoded" }
+                      ],
+                      "url": { "raw": "{{baseUrl}}/api/pos/transaksi/validate-voucher", "host": ["{{baseUrl}}"], "path": ["api", "pos", "transaksi", "validate-voucher"] }
+                    },
+                    "status": "OK",
+                    "code": 200,
+                    "body": "{\n  \"valid\": false,\n  \"message\": \"Kode voucher tidak ditemukan\"\n}"
+                  }
+                ]
+              },
+              {
+                "name": "Validate Customer",
+                "request": {
+                  "method": "POST",
+                  "header": [
+                    { "key": "Authorization", "value": "Bearer {{jwt_token}}" },
+                    { "key": "Content-Type", "value": "application/x-www-form-urlencoded" }
+                  ],
+                  "url": {
+                    "raw": "{{baseUrl}}/api/pos/transaksi/validate-customer",
+                    "host": ["{{baseUrl}}"],
+                    "path": ["api", "pos", "transaksi", "validate-customer"]
+                  },
+                  "body": {
+                    "mode": "urlencoded",
+                    "urlencoded": [
+                      { "key": "customer_id", "value": "123", "description": "Customer ID to validate" }
+                    ]
+                  }
+                },
+                "response": [
+                  {
+                    "name": "Success - Valid Customer",
+                    "originalRequest": {
+                      "method": "POST",
+                      "header": [
+                        { "key": "Authorization", "value": "Bearer {{jwt_token}}" },
+                        { "key": "Content-Type", "value": "application/x-www-form-urlencoded" }
+                      ],
+                      "url": { "raw": "{{baseUrl}}/api/pos/transaksi/validate-customer", "host": ["{{baseUrl}}"], "path": ["api", "pos", "transaksi", "validate-customer"] }
+                    },
+                    "status": "OK",
+                    "code": 200,
+                    "body": "{\n  \"valid\": true,\n  \"customer\": {\n    \"id\": 123,\n    \"nama\": \"John Doe\",\n    \"tipe\": \"umum\",\n    \"status_blokir\": \"0\"\n  },\n  \"message\": \"Customer valid\"\n}"
+                  },
+                  {
+                    "name": "Error - Customer Not Found",
+                    "originalRequest": {
+                      "method": "POST",
+                      "header": [
+                        { "key": "Authorization", "value": "Bearer {{jwt_token}}" },
+                        { "key": "Content-Type", "value": "application/x-www-form-urlencoded" }
+                      ],
+                      "url": { "raw": "{{baseUrl}}/api/pos/transaksi/validate-customer", "host": ["{{baseUrl}}"], "path": ["api", "pos", "transaksi", "validate-customer"] }
+                    },
+                    "status": "OK",
+                    "code": 200,
+                    "body": "{\n  \"valid\": false,\n  \"message\": \"Customer tidak ditemukan\"\n}"
+                  },
+                  {
+                    "name": "Error - Customer Blocked",
+                    "originalRequest": {
+                      "method": "POST",
+                      "header": [
+                        { "key": "Authorization", "value": "Bearer {{jwt_token}}" },
+                        { "key": "Content-Type", "value": "application/x-www-form-urlencoded" }
+                      ],
+                      "url": { "raw": "{{baseUrl}}/api/pos/transaksi/validate-customer", "host": ["{{baseUrl}}"], "path": ["api", "pos", "transaksi", "validate-customer"] }
+                    },
+                    "status": "OK",
+                    "code": 200,
+                    "body": "{\n  \"valid\": false,\n  \"message\": \"Customer diblokir\"\n}"
+                  }
+                ]
+              },
+              {
+                "name": "Get All Vouchers",
+                "request": {
+                  "method": "GET",
+                  "header": [
+                    { "key": "Authorization", "value": "Bearer {{jwt_token}}" }
+                  ],
+                  "url": {
+                    "raw": "{{baseUrl}}/api/pos/transaksi/vouchers?page=1&per_page=10&search=&status=",
+                    "host": ["{{baseUrl}}"],
+                    "path": ["api", "pos", "transaksi", "vouchers"],
+                    "query": [
+                      { "key": "page", "value": "1", "description": "Page number for pagination" },
+                      { "key": "per_page", "value": "10", "description": "Items per page" },
+                      { "key": "search", "value": "", "description": "Search keyword for voucher code or name" },
+                      { "key": "status", "value": "", "description": "Filter by status (1=active, 0=inactive)" }
+                    ]
+                  }
+                },
+                "response": [
+                  {
+                    "name": "Success",
+                    "originalRequest": {
+                      "method": "GET",
+                      "header": [
+                        { "key": "Authorization", "value": "Bearer {{jwt_token}}" }
+                      ],
+                      "url": {
+                        "raw": "{{baseUrl}}/api/pos/transaksi/vouchers?page=1&per_page=10&search=&status=",
+                        "host": ["{{baseUrl}}"],
+                        "path": ["api", "pos", "transaksi", "vouchers"],
+                        "query": [
+                          { "key": "page", "value": "1" },
+                          { "key": "per_page", "value": "10" },
+                          { "key": "search", "value": "" },
+                          { "key": "status", "value": "" }
+                        ]
+                      }
+                    },
+                    "status": "OK",
+                    "code": 200,
+                    "body": "{\n  \"success\": true,\n  \"message\": \"Vouchers retrieved successfully\",\n  \"data\": {\n    \"vouchers\": [\n      {\n        \"id\": 1,\n        \"kode_voucher\": \"DISKON50\",\n        \"nama_voucher\": \"Diskon 50%\",\n        \"jenis_voucher\": \"persen\",\n        \"nominal\": 50,\n        \"min_pembelian\": 100000,\n        \"max_diskon\": 50000,\n        \"kuota\": 100,\n        \"kuota_terpakai\": 25,\n        \"tgl_mulai\": \"2025-01-01\",\n        \"tgl_berakhir\": \"2025-12-31\",\n        \"status\": \"1\",\n        \"is_valid\": true,\n        \"sisa_kuota\": 75,\n        \"created_at\": \"2025-01-01 00:00:00\",\n        \"updated_at\": \"2025-01-15 10:30:00\"\n      },\n      {\n        \"id\": 2,\n        \"kode_voucher\": \"CASHBACK10K\",\n        \"nama_voucher\": \"Cashback 10K\",\n        \"jenis_voucher\": \"nominal\",\n        \"nominal\": 10000,\n        \"min_pembelian\": 50000,\n        \"max_diskon\": 10000,\n        \"kuota\": 50,\n        \"kuota_terpakai\": 10,\n        \"tgl_mulai\": \"2025-01-01\",\n        \"tgl_berakhir\": \"2025-06-30\",\n        \"status\": \"1\",\n        \"is_valid\": true,\n        \"sisa_kuota\": 40,\n        \"created_at\": \"2025-01-01 00:00:00\",\n        \"updated_at\": \"2025-01-10 14:20:00\"\n      }\n    ],\n    \"pagination\": {\n      \"current_page\": 1,\n      \"per_page\": 10,\n      \"total\": 2,\n      \"total_pages\": 1,\n      \"has_next\": false,\n      \"has_prev\": false\n    }\n  }\n}"
+                  },
+                  {
+                    "name": "Success - With Search Filter",
+                    "originalRequest": {
+                      "method": "GET",
+                      "header": [
+                        { "key": "Authorization", "value": "Bearer {{jwt_token}}" }
+                      ],
+                      "url": {
+                        "raw": "{{baseUrl}}/api/pos/transaksi/vouchers?page=1&per_page=10&search=DISKON&status=1",
+                        "host": ["{{baseUrl}}"],
+                        "path": ["api", "pos", "transaksi", "vouchers"],
+                        "query": [
+                          { "key": "page", "value": "1" },
+                          { "key": "per_page", "value": "10" },
+                          { "key": "search", "value": "DISKON" },
+                          { "key": "status", "value": "1" }
+                        ]
+                      }
+                    },
+                    "status": "OK",
+                    "code": 200,
+                    "body": "{\n  \"success\": true,\n  \"message\": \"Vouchers retrieved successfully\",\n  \"data\": {\n    \"vouchers\": [\n      {\n        \"id\": 1,\n        \"kode_voucher\": \"DISKON50\",\n        \"nama_voucher\": \"Diskon 50%\",\n        \"jenis_voucher\": \"persen\",\n        \"nominal\": 50,\n        \"min_pembelian\": 100000,\n        \"max_diskon\": 50000,\n        \"kuota\": 100,\n        \"kuota_terpakai\": 25,\n        \"tgl_mulai\": \"2025-01-01\",\n        \"tgl_berakhir\": \"2025-12-31\",\n        \"status\": \"1\",\n        \"is_valid\": true,\n        \"sisa_kuota\": 75,\n        \"created_at\": \"2025-01-01 00:00:00\",\n        \"updated_at\": \"2025-01-15 10:30:00\"\n      }\n    ],\n    \"pagination\": {\n      \"current_page\": 1,\n      \"per_page\": 10,\n      \"total\": 1,\n      \"total_pages\": 1,\n      \"has_next\": false,\n      \"has_prev\": false\n    }\n  }\n}"
+                  }
+                ]
+              },
+              {
+                "name": "Buat Draft Transaksi",
+                "request": {
+                  "method": "POST",
+                  "header": [
+                    { "key": "Authorization", "value": "Bearer {{jwt_token}}" },
+                    { "key": "Content-Type", "value": "application/json" }
+                  ],
+                  "url": {
+                    "raw": "{{baseUrl}}/api/pos/transaksi/store",
+                    "host": ["{{baseUrl}}"],
+                    "path": ["api", "pos", "transaksi", "store"]
+                  },
+                  "body": {
+                    "mode": "raw",
+                    "raw": "{\n  \"id_user\": 1,\n  \"id_gudang\": 1,\n  \"is_draft\": true,\n  \"cart\": [\n    {\n      \"id_item\": 1,\n      \"id_satuan\": 1,\n      \"id_kategori\": 14,\n      \"id_merk\": 1,\n      \"kode\": \"ITEM-001\",\n      \"produk\": \"Kopi Hitam\",\n      \"satuan\": \"PCS\",\n      \"harga\": 50000,\n      \"harga_beli\": 40000,\n      \"jml\": 2,\n      \"jml_satuan\": 2,\n      \"subtotal\": 100000\n    }\n  ],\n  \"jml_total\": 100000,\n  \"jml_subtotal\": 90090,\n  \"jml_gtotal\": 100000,\n  \"voucher_code\": null,\n  \"voucher_discount\": 0\n}",
+                    "description": "JSON payload for creating a draft transaction"
+                  }
+                },
+                "response": [
+                  {
+                    "name": "Success - Draft Created",
+                    "originalRequest": {
+                      "method": "POST",
+                      "header": [
+                        { "key": "Authorization", "value": "Bearer {{jwt_token}}" },
+                        { "key": "Content-Type", "value": "application/json" }
+                      ],
+                      "url": { "raw": "{{baseUrl}}/api/pos/transaksi/store", "host": ["{{baseUrl}}"], "path": ["api", "pos", "transaksi", "store"] }
+                    },
+                    "status": "OK",
+                    "code": 200,
+                    "body": "{\n  \"success\": true,\n  \"message\": \"Draft berhasil disimpan\",\n  \"transaction_id\": 456,\n  \"no_nota\": \"INV20250118001\",\n  \"total\": 100000,\n  \"change\": 0,\n  \"is_draft\": true\n}"
+                  }
+                ]
+              },
+              {
+                "name": "Convert Draft ke Transaksi",
+                "request": {
+                  "method": "POST",
+                  "header": [
+                    { "key": "Authorization", "value": "Bearer {{jwt_token}}" },
+                    { "key": "Content-Type", "value": "application/json" }
+                  ],
+                  "url": {
+                    "raw": "{{baseUrl}}/api/pos/transaksi/store",
+                    "host": ["{{baseUrl}}"],
+                    "path": ["api", "pos", "transaksi", "store"]
+                  },
+                  "body": {
+                    "mode": "raw",
+                    "raw": "{\n  \"draft_id\": 456,\n  \"is_draft\": false,\n  \"id_user\": 1,\n  \"id_sales\": 2,\n  \"id_pelanggan\": 123,\n  \"id_gudang\": 1,\n  \"id_shift\": 1,\n  \"no_nota\": \"INV20250118001\",\n  \"tgl_masuk\": \"2025-01-18 10:00:00\",\n  \"tgl_bayar\": \"2025-01-18 10:00:00\",\n  \"jml_total\": 100000,\n  \"jml_subtotal\": 90090,\n  \"jml_gtotal\": 100000,\n  \"jml_bayar\": 100000,\n  \"jml_kembali\": 0,\n  \"cart\": [\n    {\n      \"id_item\": 1,\n      \"id_satuan\": 1,\n      \"id_kategori\": 14,\n      \"id_merk\": 1,\n      \"kode\": \"ITEM-001\",\n      \"produk\": \"Kopi Hitam\",\n      \"satuan\": \"PCS\",\n      \"harga\": 50000,\n      \"harga_beli\": 40000,\n      \"jml\": 2,\n      \"jml_satuan\": 2,\n      \"subtotal\": 100000\n    }\n  ],\n  \"platform\": [\n    {\n      \"id_platform\": 1,\n      \"platform\": \"cash\",\n      \"keterangan\": \"Pembayaran tunai\",\n      \"nominal\": 100000\n    }\n  ]\n}",
+                    "description": "JSON payload for converting draft to completed transaction"
+                  }
+                },
+                "response": [
+                  {
+                    "name": "Success - Draft Converted",
+                    "originalRequest": {
+                      "method": "POST",
+                      "header": [
+                        { "key": "Authorization", "value": "Bearer {{jwt_token}}" },
+                        { "key": "Content-Type", "value": "application/json" }
+                      ],
+                      "url": { "raw": "{{baseUrl}}/api/pos/transaksi/store", "host": ["{{baseUrl}}"], "path": ["api", "pos", "transaksi", "store"] }
+                    },
+                    "status": "OK",
+                    "code": 200,
+                    "body": "{\n  \"success\": true,\n  \"message\": \"Transaksi berhasil diproses\",\n  \"transaction_id\": 456,\n  \"no_nota\": \"INV20250118001\",\n  \"total\": 100000,\n  \"change\": 0,\n  \"is_draft\": false\n}"
+                  }
+                ]
+              },
+              {
+                "name": "Get Draft List",
+                "request": {
+                  "method": "GET",
+                  "header": [
+                    { "key": "Authorization", "value": "Bearer {{jwt_token}}" }
+                  ],
+                  "url": {
+                    "raw": "{{baseUrl}}/api/pos/transaksi/drafts?user_id=1",
+                    "host": ["{{baseUrl}}"],
+                    "path": ["api", "pos", "transaksi", "drafts"],
+                    "query": [
+                      { "key": "user_id", "value": "1", "description": "User ID to get drafts for" }
+                    ]
+                  }
+                },
+                "response": [
+                  {
+                    "name": "Success",
+                    "originalRequest": {
+                      "method": "GET",
+                      "header": [
+                        { "key": "Authorization", "value": "Bearer {{jwt_token}}" }
+                      ],
+                      "url": { "raw": "{{baseUrl}}/api/pos/transaksi/drafts?user_id=1", "host": ["{{baseUrl}}"], "path": ["api", "pos", "transaksi", "drafts"] }
+                    },
+                    "status": "OK",
+                    "code": 200,
+                    "body": "{\n  \"success\": true,\n  \"message\": \"Draft transactions retrieved successfully\",\n  \"total\": 2,\n  \"drafts\": [\n    {\n      \"id\": 456,\n      \"no_nota\": \"INV20250118001\",\n      \"jml_gtotal\": 100000,\n      \"created_at\": \"2025-01-18 09:30:00\",\n      \"gudang_name\": \"Gudang Utama\"\n    },\n    {\n      \"id\": 457,\n      \"no_nota\": \"INV20250118002\",\n      \"jml_gtotal\": 75000,\n      \"created_at\": \"2025-01-18 10:15:00\",\n      \"gudang_name\": \"Gudang Utama\"\n    }\n  ]\n}"
+                  }
+                ]
+              },
+              {
+                "name": "Get Draft Detail",
+                "request": {
+                  "method": "GET",
+                  "header": [
+                    { "key": "Authorization", "value": "Bearer {{jwt_token}}" }
+                  ],
+                  "url": {
+                    "raw": "{{baseUrl}}/api/pos/transaksi/draft/456?user_id=1",
+                    "host": ["{{baseUrl}}"],
+                    "path": ["api", "pos", "transaksi", "draft", "456"],
+                    "query": [
+                      { "key": "user_id", "value": "1", "description": "User ID for validation" }
+                    ]
+                  }
+                },
+                "response": [
+                  {
+                    "name": "Success",
+                    "originalRequest": {
+                      "method": "GET",
+                      "header": [
+                        { "key": "Authorization", "value": "Bearer {{jwt_token}}" }
+                      ],
+                      "url": { "raw": "{{baseUrl}}/api/pos/transaksi/draft/456?user_id=1", "host": ["{{baseUrl}}"], "path": ["api", "pos", "transaksi", "draft", "456"] }
+                    },
+                    "status": "OK",
+                    "code": 200,
+                    "body": "{\n  \"success\": true,\n  \"message\": \"Draft retrieved successfully\",\n  \"draft\": {\n    \"id\": 456,\n    \"no_nota\": \"INV20250118001\",\n    \"id_pelanggan\": null,\n    \"customer_name\": null,\n    \"id_gudang\": 1,\n    \"cart\": [\n      {\n        \"id_item\": 1,\n        \"produk\": \"Kopi Hitam\",\n        \"kode\": \"ITEM-001\",\n        \"jml\": 2,\n        \"harga\": 50000,\n        \"subtotal\": 100000,\n        \"satuan\": \"PCS\",\n        \"kategori\": \"Minuman\",\n        \"merk\": \"Local\"\n      }\n    ],\n    \"jml_total\": 100000,\n    \"jml_gtotal\": 100000,\n    \"voucher_code\": null,\n    \"created_at\": \"2025-01-18 09:30:00\"\n  }\n}"
+                  }
+                ]
+              },
+              {
+                "name": "Delete Draft",
+                "request": {
+                  "method": "DELETE",
+                  "header": [
+                    { "key": "Authorization", "value": "Bearer {{jwt_token}}" }
+                  ],
+                  "url": {
+                    "raw": "{{baseUrl}}/api/pos/transaksi/draft/456?user_id=1",
+                    "host": ["{{baseUrl}}"],
+                    "path": ["api", "pos", "transaksi", "draft", "456"],
+                    "query": [
+                      { "key": "user_id", "value": "1", "description": "User ID for validation" }
+                    ]
+                  }
+                },
+                "response": [
+                  {
+                    "name": "Success",
+                    "originalRequest": {
+                      "method": "DELETE",
+                      "header": [
+                        { "key": "Authorization", "value": "Bearer {{jwt_token}}" }
+                      ],
+                      "url": { "raw": "{{baseUrl}}/api/pos/transaksi/draft/456?user_id=1", "host": ["{{baseUrl}}"], "path": ["api", "pos", "transaksi", "draft", "456"] }
+                    },
+                    "status": "OK",
+                    "code": 200,
+                    "body": "{\n  \"success\": true,\n  \"message\": \"Draft deleted successfully\"\n}"
+                  }
+                ]
+              }
+            ]
+          },
+          {
+            "name": "retur-jual",
+            "item": [
+              {
+                "name": "Get Returns",
+                "request": {
+                  "method": "GET",
+                  "header": [
+                    { "key": "Authorization", "value": "Bearer {{jwt_token}}" }
+                  ],
+                  "url": {
+                    "raw": "{{baseUrl}}/api/pos/retur-jual?id_pelanggan=123",
+                    "host": ["{{baseUrl}}"],
+                    "path": ["api", "pos", "retur-jual"],
+                    "query": [
+                      { "key": "id_pelanggan", "value": "123", "description": "Customer ID to filter returns (optional)" }
+                    ]
+                  }
+                },
+                "response": [
+                  {
+                    "name": "Success",
+                    "originalRequest": {
+                      "method": "GET",
+                      "header": [
+                        { "key": "Authorization", "value": "Bearer {{jwt_token}}" }
+                      ],
+                      "url": { "raw": "{{baseUrl}}/api/pos/retur-jual?id_pelanggan=123", "host": ["{{baseUrl}}"], "path": ["api", "pos", "retur-jual"] }
+                    },
+                    "status": "OK",
+                    "code": 200,
+                    "body": "{\n  \"success\": true,\n  \"message\": \"Returns retrieved successfully\",\n  \"total\": 1,\n  \"returns\": [\n    {\n      \"id\": 1,\n      \"no_retur\": \"RTJ-20250118-0001\",\n      \"id_penjualan\": 123,\n      \"customer_nama\": \"John Doe\",\n      \"original_nota\": \"INV20250118001\",\n      \"tgl_masuk\": \"2025-01-18\",\n      \"status\": 1,\n      \"status_retur\": 1,\n      \"details\": [\n        {\n          \"id\": 1,\n          \"id_item\": 1,\n          \"kode\": \"ITEM-001\",\n          \"item\": \"Kopi Hitam\",\n          \"jml\": 1,\n          \"harga\": 50000,\n          \"subtotal\": 50000\n        }\n      ]\n    }\n  ]\n}"
+                  }
+                ]
+              },
+              {
+                "name": "Get Return Detail",
+                "request": {
+                  "method": "GET",
+                  "header": [
+                    { "key": "Authorization", "value": "Bearer {{jwt_token}}" }
+                  ],
+                  "url": {
+                    "raw": "{{baseUrl}}/api/pos/retur-jual/detail/1",
+                    "host": ["{{baseUrl}}"],
+                    "path": ["api", "pos", "retur-jual", "detail", "1"]
+                  }
+                },
+                "response": [
+                  {
+                    "name": "Success",
+                    "originalRequest": {
+                      "method": "GET",
+                      "header": [
+                        { "key": "Authorization", "value": "Bearer {{jwt_token}}" }
+                      ],
+                      "url": { "raw": "{{baseUrl}}/api/pos/retur-jual/detail/1", "host": ["{{baseUrl}}"], "path": ["api", "pos", "retur-jual", "detail", "1"] }
+                    },
+                    "status": "OK",
+                    "code": 200,
+                    "body": "{\n  \"success\": true,\n  \"message\": \"Return details retrieved successfully\",\n  \"retur\": {\n    \"id\": 1,\n    \"no_retur\": \"RTJ-20250118-0001\",\n    \"id_penjualan\": 123,\n    \"customer_nama\": \"John Doe\",\n    \"original_nota\": \"INV20250118001\",\n    \"tgl_masuk\": \"2025-01-18\",\n    \"keterangan\": \"Barang rusak\",\n    \"status\": 1,\n    \"status_retur\": 1,\n    \"status_terima\": 1,\n    \"details\": [\n      {\n        \"id\": 1,\n        \"id_item\": 1,\n        \"kode\": \"ITEM-001\",\n        \"item\": \"Kopi Hitam\",\n        \"jml\": 1,\n        \"satuan\": \"PCS\",\n        \"harga\": 50000,\n        \"subtotal\": 50000,\n        \"status_item\": 1\n      }\n    ]\n  }\n}"
+                  }
+                ]
+              },
+              {
+                "name": "Get Sales for Return",
+                "request": {
+                  "method": "GET",
+                  "header": [
+                    { "key": "Authorization", "value": "Bearer {{jwt_token}}" }
+                  ],
+                  "url": {
+                    "raw": "{{baseUrl}}/api/pos/retur-jual/sales-for-return?id_pelanggan=123",
+                    "host": ["{{baseUrl}}"],
+                    "path": ["api", "pos", "retur-jual", "sales-for-return"],
+                    "query": [
+                      { "key": "id_pelanggan", "value": "123", "description": "Customer ID to filter sales (optional)" }
+                    ]
+                  }
+                },
+                "response": [
+                  {
+                    "name": "Success",
+                    "originalRequest": {
+                      "method": "GET",
+                      "header": [
+                        { "key": "Authorization", "value": "Bearer {{jwt_token}}" }
+                      ],
+                      "url": { "raw": "{{baseUrl}}/api/pos/retur-jual/sales-for-return?id_pelanggan=123", "host": ["{{baseUrl}}"], "path": ["api", "pos", "retur-jual", "sales-for-return"] }
+                    },
+                    "status": "OK",
+                    "code": 200,
+                    "body": "{\n  \"success\": true,\n  \"message\": \"Sales transactions retrieved successfully\",\n  \"total\": 2,\n  \"sales\": [\n    {\n      \"id\": 123,\n      \"no_nota\": \"INV20250118001\",\n      \"id_pelanggan\": 123,\n      \"customer_nama\": \"John Doe\",\n      \"tgl_masuk\": \"2025-01-18 10:00:00\",\n      \"jml_gtotal\": 100000,\n      \"status\": 1,\n      \"status_retur\": 0\n    }\n  ]\n}"
+                  }
+                ]
+              },
+              {
+                "name": "Get Sales Items",
+                "request": {
+                  "method": "GET",
+                  "header": [
+                    { "key": "Authorization", "value": "Bearer {{jwt_token}}" }
+                  ],
+                  "url": {
+                    "raw": "{{baseUrl}}/api/pos/retur-jual/sales-items/123",
+                    "host": ["{{baseUrl}}"],
+                    "path": ["api", "pos", "retur-jual", "sales-items", "123"]
+                  }
+                },
+                "response": [
+                  {
+                    "name": "Success",
+                    "originalRequest": {
+                      "method": "GET",
+                      "header": [
+                        { "key": "Authorization", "value": "Bearer {{jwt_token}}" }
+                      ],
+                      "url": { "raw": "{{baseUrl}}/api/pos/retur-jual/sales-items/123", "host": ["{{baseUrl}}"], "path": ["api", "pos", "retur-jual", "sales-items", "123"] }
+                    },
+                    "status": "OK",
+                    "code": 200,
+                    "body": "{\n  \"success\": true,\n  \"message\": \"Sales items retrieved successfully\",\n  \"total\": 2,\n  \"items\": [\n    {\n      \"id\": 1,\n      \"id_penjualan\": 123,\n      \"id_item\": 1,\n      \"kode\": \"ITEM-001\",\n      \"produk\": \"Kopi Hitam\",\n      \"satuan\": \"PCS\",\n      \"harga\": 50000,\n      \"jml\": 2,\n      \"subtotal\": 100000\n    }\n  ]\n}"
+                  }
+                ]
+              },
+              {
+                "name": "Create Sales Return (Refund)",
+                "request": {
+                  "method": "POST",
+                  "header": [
+                    { "key": "Authorization", "value": "Bearer {{jwt_token}}" },
+                    { "key": "Content-Type", "value": "application/json" }
+                  ],
+                  "url": {
+                    "raw": "{{baseUrl}}/api/pos/retur-jual/store",
+                    "host": ["{{baseUrl}}"],
+                    "path": ["api", "pos", "retur-jual", "store"]
+                  },
+                  "body": {
+                    "mode": "raw",
+                    "raw": "{\n  \"id_penjualan\": 123,\n  \"id_user\": 1,\n  \"id_gudang\": 1,\n  \"retur_type\": \"refund\",\n  \"tgl_retur\": \"2025-01-18\",\n  \"keterangan\": \"Barang rusak, minta refund\",\n  \"retur_items\": [\n    {\n      \"id_item\": 1,\n      \"id_satuan\": 1,\n      \"kode\": \"ITEM-001\",\n      \"produk\": \"Kopi Hitam\",\n      \"satuan\": \"PCS\",\n      \"qty\": 1,\n      \"harga\": 50000,\n      \"subtotal\": 50000\n    }\n  ]\n}",
+                    "description": "JSON payload for creating a sales return (refund)"
+                  }
+                },
+                "response": [
+                  {
+                    "name": "Success - Refund Created",
+                    "originalRequest": {
+                      "method": "POST",
+                      "header": [
+                        { "key": "Authorization", "value": "Bearer {{jwt_token}}" },
+                        { "key": "Content-Type", "value": "application/json" }
+                      ],
+                      "url": { "raw": "{{baseUrl}}/api/pos/retur-jual/store", "host": ["{{baseUrl}}"], "path": ["api", "pos", "retur-jual", "store"] }
+                    },
+                    "status": "OK",
+                    "code": 200,
+                    "body": "{\n  \"success\": true,\n  \"message\": \"Retur penjualan (Refund) berhasil disimpan\",\n  \"retur_id\": 1,\n  \"no_retur\": \"RTJ-20250118-0001\",\n  \"retur_type\": \"refund\"\n}"
+                  }
+                ]
+              },
+              {
+                "name": "Create Sales Return (Exchange)",
+                "request": {
+                  "method": "POST",
+                  "header": [
+                    { "key": "Authorization", "value": "Bearer {{jwt_token}}" },
+                    { "key": "Content-Type", "value": "application/json" }
+                  ],
+                  "url": {
+                    "raw": "{{baseUrl}}/api/pos/retur-jual/store",
+                    "host": ["{{baseUrl}}"],
+                    "path": ["api", "pos", "retur-jual", "store"]
+                  },
+                  "body": {
+                    "mode": "raw",
+                    "raw": "{\n  \"id_penjualan\": 123,\n  \"id_user\": 1,\n  \"id_gudang\": 1,\n  \"retur_type\": \"exchange\",\n  \"tgl_retur\": \"2025-01-18\",\n  \"keterangan\": \"Tukar barang dengan yang lain\",\n  \"retur_items\": [\n    {\n      \"id_item\": 1,\n      \"id_satuan\": 1,\n      \"kode\": \"ITEM-001\",\n      \"produk\": \"Kopi Hitam\",\n      \"satuan\": \"PCS\",\n      \"qty\": 1,\n      \"harga\": 50000,\n      \"subtotal\": 50000\n    }\n  ],\n  \"exchange_items\": [\n    {\n      \"id_item\": 2,\n      \"id_satuan\": 1,\n      \"kode\": \"ITEM-002\",\n      \"produk\": \"Kopi Susu\",\n      \"satuan\": \"PCS\",\n      \"qty\": 1,\n      \"harga\": 55000,\n      \"subtotal\": 55000\n    }\n  ]\n}",
+                    "description": "JSON payload for creating a sales return (exchange)"
+                  }
+                },
+                "response": [
+                  {
+                    "name": "Success - Exchange Created",
+                    "originalRequest": {
+                      "method": "POST",
+                      "header": [
+                        { "key": "Authorization", "value": "Bearer {{jwt_token}}" },
+                        { "key": "Content-Type", "value": "application/json" }
+                      ],
+                      "url": { "raw": "{{baseUrl}}/api/pos/retur-jual/store", "host": ["{{baseUrl}}"], "path": ["api", "pos", "retur-jual", "store"] }
+                    },
+                    "status": "OK",
+                    "code": 200,
+                    "body": "{\n  \"success\": true,\n  \"message\": \"Retur penjualan (Tukar Barang) berhasil disimpan\",\n  \"retur_id\": 2,\n  \"no_retur\": \"RTJ-20250118-0002\",\n  \"retur_type\": \"exchange\"\n}"
+                  }
+                ]
+              },
+              {
+                "name": "Update Return Status",
+                "request": {
+                  "method": "PUT",
+                  "header": [
+                    { "key": "Authorization", "value": "Bearer {{jwt_token}}" },
+                    { "key": "Content-Type", "value": "application/json" }
+                  ],
+                  "url": {
+                    "raw": "{{baseUrl}}/api/pos/retur-jual/status/1",
+                    "host": ["{{baseUrl}}"],
+                    "path": ["api", "pos", "retur-jual", "status", "1"]
+                  },
+                  "body": {
+                    "mode": "raw",
+                    "raw": "{\n  \"status\": \"1\",\n  \"keterangan\": \"Return approved by manager\"\n}",
+                    "description": "JSON payload for updating return status (0=draft, 1=approved, 2=rejected)"
+                  }
+                },
+                "response": [
+                  {
+                    "name": "Success - Status Updated",
+                    "originalRequest": {
+                      "method": "PUT",
+                      "header": [
+                        { "key": "Authorization", "value": "Bearer {{jwt_token}}" },
+                        { "key": "Content-Type", "value": "application/json" }
+                      ],
+                      "url": { "raw": "{{baseUrl}}/api/pos/retur-jual/status/1", "host": ["{{baseUrl}}"], "path": ["api", "pos", "retur-jual", "status", "1"] }
+                    },
+                    "status": "OK",
+                    "code": 200,
+                    "body": "{\n  \"success\": true,\n  \"message\": \"Return status updated to Approved\",\n  \"retur_id\": 1,\n  \"status\": \"1\"\n}"
+                  }
+                ]
+              },
+              {
+                "name": "Search Items for Exchange",
+                "request": {
+                  "method": "GET",
+                  "header": [
+                    { "key": "Authorization", "value": "Bearer {{jwt_token}}" }
+                  ],
+                  "url": {
+                    "raw": "{{baseUrl}}/api/pos/retur-jual/search-items?search=kopi&id_gudang=1",
+                    "host": ["{{baseUrl}}"],
+                    "path": ["api", "pos", "retur-jual", "search-items"],
+                    "query": [
+                      { "key": "search", "value": "kopi", "description": "Search keyword for item name, code, or barcode" },
+                      { "key": "id_gudang", "value": "1", "description": "Warehouse ID to filter items" }
+                    ]
+                  }
+                },
+                "response": [
+                  {
+                    "name": "Success",
+                    "originalRequest": {
+                      "method": "GET",
+                      "header": [
+                        { "key": "Authorization", "value": "Bearer {{jwt_token}}" }
+                      ],
+                      "url": { "raw": "{{baseUrl}}/api/pos/retur-jual/search-items?search=kopi&id_gudang=1", "host": ["{{baseUrl}}"], "path": ["api", "pos", "retur-jual", "search-items"] }
+                    },
+                    "status": "OK",
+                    "code": 200,
+                    "body": "{\n  \"success\": true,\n  \"message\": \"Items retrieved successfully\",\n  \"total\": 2,\n  \"items\": [\n    {\n      \"id\": 1,\n      \"kode\": \"ITEM-001\",\n      \"item\": \"Kopi Hitam\",\n      \"barcode\": \"1234567890\",\n      \"harga_jual\": 50000,\n      \"harga_beli\": 40000,\n      \"stok\": 25,\n      \"kategori\": \"Minuman\",\n      \"merk\": \"Local\",\n      \"satuan\": \"PCS\",\n      \"status\": 1\n    },\n    {\n      \"id\": 2,\n      \"kode\": \"ITEM-002\",\n      \"item\": \"Kopi Susu\",\n      \"barcode\": \"1234567891\",\n      \"harga_jual\": 55000,\n      \"harga_beli\": 45000,\n      \"stok\": 15,\n      \"kategori\": \"Minuman\",\n      \"merk\": \"Local\",\n      \"satuan\": \"PCS\",\n      \"status\": 1\n    }\n  ]\n}"
+                  }
+                ]
+              },
+              {
+                "name": "Test ReturJual API",
+                "request": {
+                  "method": "GET",
+                  "header": [
+                    { "key": "Authorization", "value": "Bearer {{jwt_token}}" }
+                  ],
+                  "url": {
+                    "raw": "{{baseUrl}}/api/pos/retur-jual/test",
+                    "host": ["{{baseUrl}}"],
+                    "path": ["api", "pos", "retur-jual", "test"]
+                  }
+                },
+                "response": [
+                  {
+                    "name": "Success",
+                    "originalRequest": {
+                      "method": "GET",
+                      "header": [
+                        { "key": "Authorization", "value": "Bearer {{jwt_token}}" }
+                      ],
+                      "url": { "raw": "{{baseUrl}}/api/pos/retur-jual/test", "host": ["{{baseUrl}}"], "path": ["api", "pos", "retur-jual", "test"] }
+                    },
+                    "status": "OK",
+                    "code": 200,
+                    "body": "{\n  \"success\": true,\n  \"message\": \"ReturJual API Test endpoint working!\",\n  \"method\": \"GET\",\n  \"uri\": \"/api/pos/retur-jual/test\",\n  \"timestamp\": \"2025-01-18 10:30:00\",\n  \"user\": \"Not authenticated\"\n}"
+                  }
+                ]
+              }
+            ]
+          },
+          {
+            "name": "Dashboard",
+            "item": [
+              {
+                "name": "Main Dashboard Data",
+                "request": {
+                  "method": "GET",
+                  "header": [
+                    { "key": "Authorization", "value": "Bearer {{jwt_token}}" }
+                  ],
+                  "url": {
+                    "raw": "{{baseUrl}}/api/pos/dashboard",
+                    "host": ["{{baseUrl}}"],
+                    "path": ["api", "pos", "dashboard"]
+                  }
+                },
+                "response": [
+                  {
+                    "name": "Success",
+                    "originalRequest": {
+                      "method": "GET",
+                      "header": [
+                        { "key": "Authorization", "value": "Bearer {{jwt_token}}" }
+                      ],
+                      "url": { "raw": "{{baseUrl}}/api/pos/dashboard", "host": ["{{baseUrl}}"], "path": ["api", "pos", "dashboard"] }
+                    },
+                    "status": "OK",
+                    "code": 200,
+                    "body": "{\n  \"success\": true,\n  \"message\": \"Dashboard data retrieved successfully\",\n  \"data\": {\n    \"basic_metrics\": {\n      \"total_sales_transactions\": 150,\n      \"total_revenue\": 25000000,\n      \"total_purchase_transactions\": 45,\n      \"total_expenses\": 18000000,\n      \"total_profit\": 7000000,\n      \"total_stock\": 1250\n    },\n    \"analytics\": {\n      \"monthly_sales\": [...],\n      \"daily_sales\": [...],\n      \"sales_by_category\": [...],\n      \"top_selling_products\": [...]\n    },\n    \"recent_data\": {\n      \"recent_sales\": [...],\n      \"recent_purchases\": [...],\n      \"latest_products\": [...]\n    },\n    \"performance\": {\n      \"current_month_sales\": 8500000,\n      \"previous_month_sales\": 7200000,\n      \"sales_growth_percentage\": 18.06,\n      \"average_order_value\": 166666.67,\n      \"monthly_target\": 50000000,\n      \"daily_target\": 1612903.23,\n      \"today_sales\": 1200000,\n      \"monthly_progress_percentage\": 17.0,\n      \"daily_progress_percentage\": 74.4,\n      \"total_customers\": 89,\n      \"new_customers_this_month\": 12\n    }\n  }\n}"
+                  }
+                ]
+              },
+              {
+                "name": "Basic Metrics",
+                "request": {
+                  "method": "GET",
+                  "header": [
+                    { "key": "Authorization", "value": "Bearer {{jwt_token}}" }
+                  ],
+                  "url": {
+                    "raw": "{{baseUrl}}/api/pos/dashboard/basic-metrics",
+                    "host": ["{{baseUrl}}"],
+                    "path": ["api", "pos", "dashboard", "basic-metrics"]
+                  }
+                },
+                "response": [
+                  {
+                    "name": "Success",
+                    "originalRequest": {
+                      "method": "GET",
+                      "header": [
+                        { "key": "Authorization", "value": "Bearer {{jwt_token}}" }
+                      ],
+                      "url": { "raw": "{{baseUrl}}/api/pos/dashboard/basic-metrics", "host": ["{{baseUrl}}"], "path": ["api", "pos", "dashboard", "basic-metrics"] }
+                    },
+                    "status": "OK",
+                    "code": 200,
+                    "body": "{\n  \"success\": true,\n  \"message\": \"Basic metrics retrieved successfully\",\n  \"data\": {\n    \"total_sales_transactions\": 150,\n    \"total_revenue\": 25000000,\n    \"total_purchase_transactions\": 45,\n    \"total_expenses\": 18000000,\n    \"total_profit\": 7000000,\n    \"total_stock\": 1250\n  }\n}"
+                  }
+                ]
+              },
+              {
+                "name": "Sales Analytics",
+                "request": {
+                  "method": "GET",
+                  "header": [
+                    { "key": "Authorization", "value": "Bearer {{jwt_token}}" }
+                  ],
+                  "url": {
+                    "raw": "{{baseUrl}}/api/pos/dashboard/sales-analytics",
+                    "host": ["{{baseUrl}}"],
+                    "path": ["api", "pos", "dashboard", "sales-analytics"]
+                  }
+                },
+                "response": [
+                  {
+                    "name": "Success",
+                    "originalRequest": {
+                      "method": "GET",
+                      "header": [
+                        { "key": "Authorization", "value": "Bearer {{jwt_token}}" }
+                      ],
+                      "url": { "raw": "{{baseUrl}}/api/pos/dashboard/sales-analytics", "host": ["{{baseUrl}}"], "path": ["api", "pos", "dashboard", "sales-analytics"] }
+                    },
+                    "status": "OK",
+                    "code": 200,
+                    "body": "{\n  \"success\": true,\n  \"message\": \"Sales analytics retrieved successfully\",\n  \"data\": {\n    \"monthly_sales\": [\n      {\n        \"month\": \"Jan 2024\",\n        \"month_code\": \"2024-01\",\n        \"total_sales\": 8500000,\n        \"transaction_count\": 51\n      }\n    ],\n    \"daily_sales\": [\n      {\n        \"day\": 1,\n        \"date\": \"2024-01-01\",\n        \"total_sales\": 1200000,\n        \"transaction_count\": 8\n      }\n    ],\n    \"sales_by_category\": [\n      {\n        \"category_id\": 1,\n        \"category_name\": \"Elektronik\",\n        \"total_sales\": 8500000,\n        \"total_items\": 45\n      }\n    ],\n    \"top_selling_products\": [\n      {\n        \"product_id\": 123,\n        \"product_name\": \"Laptop ASUS\",\n        \"total_quantity\": 25,\n        \"total_sales\": 125000000,\n        \"transaction_count\": 18\n      }\n    ]\n  }\n}"
+                  }
+                ]
+              },
+              {
+                "name": "Recent Transactions",
+                "request": {
+                  "method": "GET",
+                  "header": [
+                    { "key": "Authorization", "value": "Bearer {{jwt_token}}" }
+                  ],
+                  "url": {
+                    "raw": "{{baseUrl}}/api/pos/dashboard/recent-transactions",
+                    "host": ["{{baseUrl}}"],
+                    "path": ["api", "pos", "dashboard", "recent-transactions"]
+                  }
+                },
+                "response": [
+                  {
+                    "name": "Success",
+                    "originalRequest": {
+                      "method": "GET",
+                      "header": [
+                        { "key": "Authorization", "value": "Bearer {{jwt_token}}" }
+                      ],
+                      "url": { "raw": "{{baseUrl}}/api/pos/dashboard/recent-transactions", "host": ["{{baseUrl}}"], "path": ["api", "pos", "dashboard", "recent-transactions"] }
+                    },
+                    "status": "OK",
+                    "code": 200,
+                    "body": "{\n  \"success\": true,\n  \"message\": \"Recent transactions retrieved successfully\",\n  \"data\": {\n    \"recent_sales\": [\n      {\n        \"id\": 1,\n        \"no_nota\": \"TRX-20240801-0001\",\n        \"jml_gtotal\": 100000,\n        \"tgl_masuk\": \"2024-08-01 10:00:00\"\n      }\n    ],\n    \"recent_purchases\": [\n      {\n        \"id\": 1,\n        \"no_nota\": \"PUR-20240801-0001\",\n        \"jml_gtotal\": 80000,\n        \"tgl_masuk\": \"2024-08-01 09:00:00\"\n      }\n    ],\n    \"latest_products\": [\n      {\n        \"id\": 1,\n        \"kode\": \"ITEM-001\",\n        \"produk\": \"Kopi Hitam\",\n        \"harga\": 50000\n      }\n    ]\n  }\n}"
+                  }
+                ]
+              },
+              {
+                "name": "Performance Metrics",
+                "request": {
+                  "method": "GET",
+                  "header": [
+                    { "key": "Authorization", "value": "Bearer {{jwt_token}}" }
+                  ],
+                  "url": {
+                    "raw": "{{baseUrl}}/api/pos/dashboard/performance-metrics",
+                    "host": ["{{baseUrl}}"],
+                    "path": ["api", "pos", "dashboard", "performance-metrics"]
+                  }
+                },
+                "response": [
+                  {
+                    "name": "Success",
+                    "originalRequest": {
+                      "method": "GET",
+                      "header": [
+                        { "key": "Authorization", "value": "Bearer {{jwt_token}}" }
+                      ],
+                      "url": { "raw": "{{baseUrl}}/api/pos/dashboard/performance-metrics", "host": ["{{baseUrl}}"], "path": ["api", "pos", "dashboard", "performance-metrics"] }
+                    },
+                    "status": "OK",
+                    "code": 200,
+                    "body": "{\n  \"success\": true,\n  \"message\": \"Performance metrics retrieved successfully\",\n  \"data\": {\n    \"current_month_sales\": 8500000,\n    \"previous_month_sales\": 7200000,\n    \"sales_growth_percentage\": 18.06,\n    \"average_order_value\": 166666.67,\n    \"monthly_target\": 50000000,\n    \"daily_target\": 1612903.23,\n    \"today_sales\": 1200000,\n    \"monthly_progress_percentage\": 17.0,\n    \"daily_progress_percentage\": 74.4,\n    \"total_customers\": 89,\n    \"new_customers_this_month\": 12\n  }\n}"
+                  }
+                ]
+              },
+              {
+                "name": "Monthly Sales Data",
+                "request": {
+                  "method": "GET",
+                  "header": [
+                    { "key": "Authorization", "value": "Bearer {{jwt_token}}" }
+                  ],
+                  "url": {
+                    "raw": "{{baseUrl}}/api/pos/dashboard/monthly-sales",
+                    "host": ["{{baseUrl}}"],
+                    "path": ["api", "pos", "dashboard", "monthly-sales"]
+                  }
+                },
+                "response": [
+                  {
+                    "name": "Success",
+                    "originalRequest": {
+                      "method": "GET",
+                      "header": [
+                        { "key": "Authorization", "value": "Bearer {{jwt_token}}" }
+                      ],
+                      "url": { "raw": "{{baseUrl}}/api/pos/dashboard/monthly-sales", "host": ["{{baseUrl}}"], "path": ["api", "pos", "dashboard", "monthly-sales"] }
+                    },
+                    "status": "OK",
+                    "code": 200,
+                    "body": "{\n  \"success\": true,\n  \"message\": \"Monthly sales data retrieved successfully\",\n  \"data\": [\n    {\n      \"month\": \"Jan 2024\",\n      \"month_code\": \"2024-01\",\n      \"total_sales\": 8500000,\n      \"transaction_count\": 51\n    },\n    {\n      \"month\": \"Feb 2024\",\n      \"month_code\": \"2024-02\",\n      \"total_sales\": 9200000,\n      \"transaction_count\": 48\n    }\n  ]\n}"
+                  }
+                ]
+              },
+              {
+                "name": "Daily Sales Data",
+                "request": {
+                  "method": "GET",
+                  "header": [
+                    { "key": "Authorization", "value": "Bearer {{jwt_token}}" }
+                  ],
+                  "url": {
+                    "raw": "{{baseUrl}}/api/pos/dashboard/daily-sales",
+                    "host": ["{{baseUrl}}"],
+                    "path": ["api", "pos", "dashboard", "daily-sales"]
+                  }
+                },
+                "response": [
+                  {
+                    "name": "Success",
+                    "originalRequest": {
+                      "method": "GET",
+                      "header": [
+                        { "key": "Authorization", "value": "Bearer {{jwt_token}}" }
+                      ],
+                      "url": { "raw": "{{baseUrl}}/api/pos/dashboard/daily-sales", "host": ["{{baseUrl}}"], "path": ["api", "pos", "dashboard", "daily-sales"] }
+                    },
+                    "status": "OK",
+                    "code": 200,
+                    "body": "{\n  \"success\": true,\n  \"message\": \"Daily sales data retrieved successfully\",\n  \"data\": [\n    {\n      \"day\": 1,\n      \"date\": \"2024-01-01\",\n      \"total_sales\": 1200000,\n      \"transaction_count\": 8\n    },\n    {\n      \"day\": 2,\n      \"date\": \"2024-01-02\",\n      \"total_sales\": 1500000,\n      \"transaction_count\": 12\n    }\n  ]\n}"
+                  }
+                ]
+              },
+              {
+                "name": "Sales by Category",
+                "request": {
+                  "method": "GET",
+                  "header": [
+                    { "key": "Authorization", "value": "Bearer {{jwt_token}}" }
+                  ],
+                  "url": {
+                    "raw": "{{baseUrl}}/api/pos/dashboard/sales-by-category",
+                    "host": ["{{baseUrl}}"],
+                    "path": ["api", "pos", "dashboard", "sales-by-category"]
+                  }
+                },
+                "response": [
+                  {
+                    "name": "Success",
+                    "originalRequest": {
+                      "method": "GET",
+                      "header": [
+                        { "key": "Authorization", "value": "Bearer {{jwt_token}}" }
+                      ],
+                      "url": { "raw": "{{baseUrl}}/api/pos/dashboard/sales-by-category", "host": ["{{baseUrl}}"], "path": ["api", "pos", "dashboard", "sales-by-category"] }
+                    },
+                    "status": "OK",
+                    "code": 200,
+                    "body": "{\n  \"success\": true,\n  \"message\": \"Sales by category retrieved successfully\",\n  \"data\": [\n    {\n      \"category_id\": 1,\n      \"category_name\": \"Elektronik\",\n      \"total_sales\": 8500000,\n      \"total_items\": 45\n    },\n    {\n      \"category_id\": 2,\n      \"category_name\": \"Fashion\",\n      \"total_sales\": 6500000,\n      \"total_items\": 38\n    }\n  ]\n}"
+                  }
+                ]
+              },
+              {
+                "name": "Top Selling Products",
+                "request": {
+                  "method": "GET",
+                  "header": [
+                    { "key": "Authorization", "value": "Bearer {{jwt_token}}" }
+                  ],
+                  "url": {
+                    "raw": "{{baseUrl}}/api/pos/dashboard/top-products",
+                    "host": ["{{baseUrl}}"],
+                    "path": ["api", "pos", "dashboard", "top-products"]
+                  }
+                },
+                "response": [
+                  {
+                    "name": "Success - Default Limit (5)",
+                    "originalRequest": {
+                      "method": "GET",
+                      "header": [
+                        { "key": "Authorization", "value": "Bearer {{jwt_token}}" }
+                      ],
+                      "url": { "raw": "{{baseUrl}}/api/pos/dashboard/top-products", "host": ["{{baseUrl}}"], "path": ["api", "pos", "dashboard", "top-products"] }
+                    },
+                    "status": "OK",
+                    "code": 200,
+                    "body": "{\n  \"success\": true,\n  \"message\": \"Top selling products retrieved successfully\",\n  \"data\": [\n    {\n      \"product_id\": 123,\n      \"product_name\": \"Laptop ASUS\",\n      \"total_quantity\": 25,\n      \"total_sales\": 125000000,\n      \"transaction_count\": 18\n    },\n    {\n      \"product_id\": 124,\n      \"product_name\": \"Smartphone Samsung\",\n      \"total_quantity\": 20,\n      \"total_sales\": 80000000,\n      \"transaction_count\": 15\n    }\n  ]\n}"
+                  }
+                ]
+              },
+              {
+                "name": "Top Selling Products with Custom Limit",
+                "request": {
+                  "method": "GET",
+                  "header": [
+                    { "key": "Authorization", "value": "Bearer {{jwt_token}}" }
+                  ],
+                  "url": {
+                    "raw": "{{baseUrl}}/api/pos/dashboard/top-products/10",
+                    "host": ["{{baseUrl}}"],
+                    "path": ["api", "pos", "dashboard", "top-products", "10"]
+                  }
+                },
+                "response": [
+                  {
+                    "name": "Success - Custom Limit (10)",
+                    "originalRequest": {
+                      "method": "GET",
+                      "header": [
+                        { "key": "Authorization", "value": "Bearer {{jwt_token}}" }
+                      ],
+                      "url": { "raw": "{{baseUrl}}/api/pos/dashboard/top-products/10", "host": ["{{baseUrl}}"], "path": ["api", "pos", "dashboard", "top-products", "10"] }
+                    },
+                    "status": "OK",
+                    "code": 200,
+                    "body": "{\n  \"success\": true,\n  \"message\": \"Top selling products retrieved successfully\",\n  \"data\": [\n    {\n      \"product_id\": 123,\n      \"product_name\": \"Laptop ASUS\",\n      \"total_quantity\": 25,\n      \"total_sales\": 125000000,\n      \"transaction_count\": 18\n    },\n    {\n      \"product_id\": 124,\n      \"product_name\": \"Smartphone Samsung\",\n      \"total_quantity\": 20,\n      \"total_sales\": 80000000,\n      \"transaction_count\": 15\n    },\n    {\n      \"product_id\": 125,\n      \"product_name\": \"Headphone Sony\",\n      \"total_quantity\": 18,\n      \"total_sales\": 45000000,\n      \"transaction_count\": 12\n    }\n  ]\n}"
+                  }
+                ]
+              }
+            ]
+          },
+          {
+            "name": "petty-cash",
+        "item": [
+          {
+            "name": "Get Petty Cash List",
+            "request": {
+              "method": "GET",
+              "header": [
+                { "key": "Authorization", "value": "Bearer {{jwt_token}}" }
+              ],
+              "url": {
+                "raw": "{{baseUrl}}/api/pos/petty-cash",
+                "host": ["{{baseUrl}}"],
+                "path": ["api", "pos", "petty-cash"]
+              }
+            }
+          },
+          {
+            "name": "Get Petty Cash Detail",
+            "request": {
+              "method": "GET",
+              "header": [
+                { "key": "Authorization", "value": "Bearer {{jwt_token}}" }
+              ],
+              "url": {
+                "raw": "{{baseUrl}}/api/pos/petty-cash/detail/1",
+                "host": ["{{baseUrl}}"],
+                "path": ["api", "pos", "petty-cash", "detail", "1"]
+              }
+            }
+          },
+          {
+            "name": "Create Petty Cash",
+            "request": {
+              "method": "POST",
+              "header": [
+                { "key": "Authorization", "value": "Bearer {{jwt_token}}" },
+                { "key": "Content-Type", "value": "application/json" }
+              ],
+              "body": {
+                "mode": "raw",
+                "raw": "{\n  \"shift_id\": 1,\n  \"outlet_id\": 1,\n  \"category_id\": 1,\n  \"direction\": \"OUT\",\n  \"amount\": 50000,\n  \"reason\": \"Pembelian alat tulis\"\n}"
+              },
+              "url": {
+                "raw": "{{baseUrl}}/api/pos/petty-cash/store",
+                "host": ["{{baseUrl}}"],
+                "path": ["api", "pos", "petty-cash", "store"]
+              }
+            }
+          },
+          {
+            "name": "Update Petty Cash",
+            "request": {
+              "method": "POST",
+              "header": [
+                { "key": "Authorization", "value": "Bearer {{jwt_token}}" },
+                { "key": "Content-Type", "value": "application/json" }
+              ],
+              "body": {
+                "mode": "raw",
+                "raw": "{\n  \"category_id\": 2,\n  \"amount\": 75000,\n  \"reason\": \"Pembelian alat tulis dan kertas\"\n}"
+              },
+              "url": {
+                "raw": "{{baseUrl}}/api/pos/petty-cash/update/1",
+                "host": ["{{baseUrl}}"],
+                "path": ["api", "pos", "petty-cash", "update", "1"]
+              }
+            }
+          },
+          {
+            "name": "Delete Petty Cash",
+            "request": {
+              "method": "DELETE",
+              "header": [
+                { "key": "Authorization", "value": "Bearer {{jwt_token}}" }
+              ],
+              "url": {
+                "raw": "{{baseUrl}}/api/pos/petty-cash/delete/1",
+                "host": ["{{baseUrl}}"],
+                "path": ["api", "pos", "petty-cash", "delete", "1"]
+              }
+            }
+          },
+          {
+            "name": "Approve Petty Cash",
+            "request": {
+              "method": "POST",
+              "header": [
+                { "key": "Authorization", "value": "Bearer {{jwt_token}}" }
+              ],
+              "url": {
+                "raw": "{{baseUrl}}/api/pos/petty-cash/approve/1",
+                "host": ["{{baseUrl}}"],
+                "path": ["api", "pos", "petty-cash", "approve", "1"]
+              }
+            }
+          },
+          {
+            "name": "Reject Petty Cash",
+            "request": {
+              "method": "POST",
+              "header": [
+                { "key": "Authorization", "value": "Bearer {{jwt_token}}" },
+                { "key": "Content-Type", "value": "application/json" }
+              ],
+              "body": {
+                "mode": "raw",
+                "raw": "{\n  \"rejection_reason\": \"Dokumen tidak lengkap\"\n}"
+              },
+              "url": {
+                "raw": "{{baseUrl}}/api/pos/petty-cash/reject/1",
+                "host": ["{{baseUrl}}"],
+                "path": ["api", "pos", "petty-cash", "reject", "1"]
+              }
+            }
+          },
+          {
+            "name": "Void Petty Cash",
+            "request": {
+              "method": "POST",
+              "header": [
+                { "key": "Authorization", "value": "Bearer {{jwt_token}}" },
+                { "key": "Content-Type", "value": "application/json" }
+              ],
+              "body": {
+                "mode": "raw",
+                "raw": "{\n  \"void_reason\": \"Kesalahan input data\"\n}"
+              },
+              "url": {
+                "raw": "{{baseUrl}}/api/pos/petty-cash/void/1",
+                "host": ["{{baseUrl}}"],
+                "path": ["api", "pos", "petty-cash", "void", "1"]
+              }
+            }
+          },
+          {
+            "name": "Get Petty Cash Summary",
+            "request": {
+              "method": "GET",
+              "header": [
+                { "key": "Authorization", "value": "Bearer {{jwt_token}}" }
+              ],
+              "url": {
+                "raw": "{{baseUrl}}/api/pos/petty-cash/summary?outlet_id=1&date_from=2025-01-01&date_to=2025-01-31",
+                "host": ["{{baseUrl}}"],
+                "path": ["api", "pos", "petty-cash", "summary"]
+              }
+            }
+          }
+        ]
+      },
+      {
+        "name": "shift-management",
+        "item": [
+          {
+            "name": "Get Shift List",
+            "request": {
+              "method": "GET",
+              "header": [
+                { "key": "Authorization", "value": "Bearer {{jwt_token}}" }
+              ],
+              "url": {
+                "raw": "{{baseUrl}}/api/pos/shift",
+                "host": ["{{baseUrl}}"],
+                "path": ["api", "pos", "shift"]
+              }
+            }
+          },
+          {
+            "name": "Get Shift Detail",
+            "request": {
+              "method": "GET",
+              "header": [
+                { "key": "Authorization", "value": "Bearer {{jwt_token}}" }
+              ],
+              "url": {
+                "raw": "{{baseUrl}}/api/pos/shift/detail/1",
+                "host": ["{{baseUrl}}"],
+                "path": ["api", "pos", "shift", "detail", "1"]
+              }
+            }
+          },
+          {
+            "name": "Open Shift",
+            "request": {
+              "method": "POST",
+              "header": [
+                { "key": "Authorization", "value": "Bearer {{jwt_token}}" },
+                { "key": "Content-Type", "value": "application/json" }
+              ],
+              "body": {
+                "mode": "raw",
+                "raw": "{\n  \"outlet_id\": 1,\n  \"saldo_awal\": 1000000\n}"
+              },
+              "url": {
+                "raw": "{{baseUrl}}/api/pos/shift/open",
+                "host": ["{{baseUrl}}"],
+                "path": ["api", "pos", "shift", "open"]
+              }
+            }
+          },
+          {
+            "name": "Close Shift",
+            "request": {
+              "method": "POST",
+              "header": [
+                { "key": "Authorization", "value": "Bearer {{jwt_token}}" },
+                { "key": "Content-Type", "value": "application/json" }
+              ],
+              "body": {
+                "mode": "raw",
+                "raw": "{\n  \"saldo_akhir\": 950000,\n  \"notes\": \"Shift berakhir normal\"\n}"
+              },
+              "url": {
+                "raw": "{{baseUrl}}/api/pos/shift/close/1",
+                "host": ["{{baseUrl}}"],
+                "path": ["api", "pos", "shift", "close", "1"]
+              }
+            }
+          },
+          {
+            "name": "Get Shift Summary",
+            "request": {
+              "method": "GET",
+              "header": [
+                { "key": "Authorization", "value": "Bearer {{jwt_token}}" }
+              ],
+              "url": {
+                "raw": "{{baseUrl}}/api/pos/shift/summary/1",
+                "host": ["{{baseUrl}}"],
+                "path": ["api", "pos", "shift", "summary", "1"]
+              }
+            }
+          }
+        ]
+      },
+      {
+        "name": "petty-category",
+        "item": [
+          {
+            "name": "Get Category List",
+            "request": {
+              "method": "GET",
+              "header": [
+                { "key": "Authorization", "value": "Bearer {{jwt_token}}" }
+              ],
+              "url": {
+                "raw": "{{baseUrl}}/api/pos/petty-category",
+                "host": ["{{baseUrl}}"],
+                "path": ["api", "pos", "petty-category"]
+              }
+            }
+          },
+          {
+            "name": "Get Category Detail",
+            "request": {
+              "method": "GET",
+              "header": [
+                { "key": "Authorization", "value": "Bearer {{jwt_token}}" }
+              ],
+              "url": {
+                "raw": "{{baseUrl}}/api/pos/petty-category/detail/1",
+                "host": ["{{baseUrl}}"],
+                "path": ["api", "pos", "petty-category", "detail", "1"]
+              }
+            }
+          },
+          {
+            "name": "Create Category",
+            "request": {
+              "method": "POST",
+              "header": [
+                { "key": "Authorization", "value": "Bearer {{jwt_token}}" },
+                { "key": "Content-Type", "value": "application/json" }
+              ],
+              "body": {
+                "mode": "raw",
+                "raw": "{\n  \"name\": \"Alat Tulis\",\n  \"is_active\": 1\n}"
+              },
+              "url": {
+                "raw": "{{baseUrl}}/api/pos/petty-category/store",
+                "host": ["{{baseUrl}}"],
+                "path": ["api", "pos", "petty-category", "store"]
+              }
+            }
+          },
+          {
+            "name": "Update Category",
+            "request": {
+              "method": "POST",
+              "header": [
+                { "key": "Authorization", "value": "Bearer {{jwt_token}}" },
+                { "key": "Content-Type", "value": "application/json" }
+              ],
+              "body": {
+                "mode": "raw",
+                "raw": "{\n  \"name\": \"Alat Tulis & Kertas\",\n  \"is_active\": 1\n}"
+              },
+                              "url": {
+                  "raw": "{{baseUrl}}/api/pos/petty-category/update/1",
+                  "host": ["{{baseUrl}}"],
+                  "path": ["api", "pos", "petty-category", "update", "1"]
+                }
+            }
+          },
+          {
+            "name": "Delete Category",
+            "request": {
+              "method": "DELETE",
+              "header": [
+                { "key": "Authorization", "value": "Bearer {{jwt_token}}" }
+              ],
+              "url": {
+                "raw": "{{baseUrl}}/api/pos/petty-category/delete/1",
+                "host": ["{{baseUrl}}"],
+                "path": ["api", "pos", "petty-category", "delete", "1"]
+              }
+            }
+          },
+          {
+            "name": "Toggle Category Status",
+            "request": {
+              "method": "POST",
+              "header": [
+                { "key": "Authorization", "value": "Bearer {{jwt_token}}" }
+              ],
+              "url": {
+                "raw": "{{baseUrl}}/api/pos/petty-category/toggle-status/1",
+                "host": ["{{baseUrl}}"],
+                "path": ["api", "pos", "petty-category", "toggle-status", "1"]
+              }
+            }
+          }
+        ]
+      },
+      {
+        "name": "anggota-master",
+        "item": [
+          {
+            "name": "Get Member Profile",
+            "request": {
+              "method": "GET",
+              "header": [
+                { "key": "Authorization", "value": "Bearer {{jwt_token}}" }
+              ],
+              "url": {
+                "raw": "{{baseUrl}}/api/pos/anggota/profile?user_id=1",
+                "host": ["{{baseUrl}}"],
+                "path": ["api", "pos", "anggota", "profile"],
+                "query": [
+                  { "key": "user_id", "value": "1", "description": "User ID for member profile" }
+                ]
+              }
+            }
+          },
+          {
+            "name": "Get Member List",
+            "request": {
+              "method": "GET",
+              "header": [
+                { "key": "Authorization", "value": "Bearer {{jwt_token}}" }
+              ],
+              "url": {
+                "raw": "{{baseUrl}}/api/pos/anggota?page=1&per_page=10&search=john",
+                "host": ["{{baseUrl}}"],
+                "path": ["api", "pos", "anggota"],
+                "query": [
+                  { "key": "page", "value": "1", "description": "Page number for pagination" },
+                  { "key": "per_page", "value": "10", "description": "Items per page" },
+                  { "key": "search", "value": "john", "description": "Search keyword (optional)" }
+                ]
+              }
+            }
+          },
+          {
+            "name": "Get Member Detail",
+            "request": {
+              "method": "GET",
+              "header": [
+                { "key": "Authorization", "value": "Bearer {{jwt_token}}" }
+              ],
+              "url": {
+                "raw": "{{baseUrl}}/api/pos/anggota/1",
+                "host": ["{{baseUrl}}"],
+                "path": ["api", "pos", "anggota", "1"]
+              }
+            }
+          },
+          {
+            "name": "Search Members",
+            "request": {
+              "method": "GET",
+              "header": [
+                { "key": "Authorization", "value": "Bearer {{jwt_token}}" }
+              ],
+              "url": {
+                "raw": "{{baseUrl}}/api/pos/anggota/search?q=john&limit=5",
+                "host": ["{{baseUrl}}"],
+                "path": ["api", "pos", "anggota", "search"],
+                "query": [
+                  { "key": "q", "value": "john", "description": "Search query" },
+                  { "key": "limit", "value": "5", "description": "Maximum results to return" }
+                ]
+              }
+            }
+          },
+          {
+            "name": "Get Member Transactions",
+            "request": {
+              "method": "GET",
+              "header": [
+                { "key": "Authorization", "value": "Bearer {{jwt_token}}" }
+              ],
+              "url": {
+                "raw": "{{baseUrl}}/api/pos/anggota/1/transactions?page=1&per_page=10",
+                "host": ["{{baseUrl}}"],
+                "path": ["api", "pos", "anggota", "1", "transactions"],
+                "query": [
+                  { "key": "page", "value": "1", "description": "Page number for pagination" },
+                  { "key": "per_page", "value": "10", "description": "Items per page" }
+                ]
+              }
+            }
+          },
+          {
+            "name": "Validate Member",
+            "request": {
+              "method": "POST",
+              "header": [
+                { "key": "Authorization", "value": "Bearer {{jwt_token}}" },
+                { "key": "Content-Type", "value": "application/x-www-form-urlencoded" }
+              ],
+              "url": {
+                "raw": "{{baseUrl}}/api/pos/anggota/validate",
+                "host": ["{{baseUrl}}"],
+                "path": ["api", "pos", "anggota", "validate"]
+              },
+              "body": {
+                "mode": "urlencoded",
+                "urlencoded": [
+                  { "key": "username", "value": "johndoe", "description": "Member username" },
+                  { "key": "password", "value": "password123", "description": "Member password" }
+                ]
+              }
+            }
+          },
+          {
+            "name": "Get Member Statistics",
+            "request": {
+              "method": "GET",
+              "header": [
+                { "key": "Authorization", "value": "Bearer {{jwt_token}}" }
+              ],
+              "url": {
+                "raw": "{{baseUrl}}/api/pos/anggota/stats",
+                "host": ["{{baseUrl}}"],
+                "path": ["api", "pos", "anggota", "stats"]
+              }
+            }
+          },
+          {
+            "name": "Test Anggota API",
+            "request": {
+              "method": "GET",
+              "header": [
+                { "key": "Authorization", "value": "Bearer {{jwt_token}}" }
+              ],
+              "url": {
+                "raw": "{{baseUrl}}/api/pos/anggota/test",
+                "host": ["{{baseUrl}}"],
+                "path": ["api", "pos", "anggota", "test"]
+              }
+            }
+          }
+        ]
+      }
+    ]
+  }
+],
+"variable": [
+  { "key": "baseUrl", "value": "https://dev.kopmensa.com/" },
+  { "key": "jwt_token", "value": "" }
+]
+}
